@@ -82,6 +82,8 @@ Writes, edits and reviews any text people will read (a website, an email, a post
 
 Builds a brand book from a brief, the logo and product data. Everything comes from one `brand.json`, so the parts can't drift apart:
 
+- **a quick reference** right after the cover: the logo, the core colours, the typeface and its office substitute, five rules, whom to ask and where the current version lives;
+- **text people can use**: positioning from the customer's real alternatives, proof with sources and dates, tone in the situations the business writes in every day, the description in one sentence and in fifty words; field names, build files and tool names never reach the client's text (the checks flag them);
 - **an interactive deck** of 16:9 slides in one web page, in two parts, the brand and the rules: photo, colour and type tiles, a "reading as" filter (owner, designer, printer, marketing), colour values to copy, a contrast matrix and label previews; the PDF is the same slides, one per page. Photos make part 1: the client's, or photorealistic visualisations made with Codex when it's on the machine (product shots take the label render as a reference and are read letter by letter); without them it falls back to colour and type;
 - **label templates in millimetres** with bleed, safe margin and zones, checked for overflow and for the 1.2 mm x-height of mandatory food text;
 - **colour per medium** with the CMYK profile and the status of every print value (proposed, converted, proofed);

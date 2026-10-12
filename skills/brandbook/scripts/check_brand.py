@@ -14,6 +14,9 @@ and OTF files (WOFF2 is measured by render.mjs check); typefaces from the reflex
 Labels: mandatory content by category (food, supplement, cosmetic), net quantity on the front, zones
 inside the format, claims only with a register reference, a valid EAN-13 when given, placeholders
 listed. References never named outside the internal list. Files, decisions, em dashes, a stale build.
+Text: where the current version lives, the quick reference rules, audience and alternatives, proof with a
+source and a date, 3–8 situations, the description in one and fifty words; field names, build files and
+tools in text the client reads (errors), the agency named outside the cover (warning).
 
 Standard library only, no network. Exit code: 0 when there are no errors, 1 when there are errors,
 2 when brand.json is missing or not valid JSON.
@@ -46,6 +49,16 @@ REFLEX = {
 }
 PL_LETTERS = "ąćęłńóśźżĄĆĘŁŃÓŚŹŻ"
 PLACEHOLDER = re.compile(r"\b(x{2,}|X{2,}|TBD|TODO|DO USTALENIA|lorem ipsum|\?\?+)\b|xx\.", re.I)
+# The build showing through in text the client reads: field names, data paths, the skill's own files.
+PROCESS = re.compile(r"\b[a-z]+(?:_[a-z0-9]+)+\b|\b(?:meta|strategy|voice|logo|colours|imagery|labels|print|decisions|sections|quickref)"
+                     r"\.(?!(?:png|svg|jpe?g|pdf|ttf|otf|woff2?|webp|css|html)\b)[a-z_]+"
+                     r"|brand\.json|build_book|check_brand|render\.mjs|\?reader=|\b0[0-2]-(?:input|verify|system)\b")
+TOOLS = re.compile(r"\b(OpenAI|ImageGen|gpt-image|DALL[·-]?E|Midjourney|Stable Diffusion|Codex|ChatGPT|Gemini|Firefly|Ideogram)\b", re.I)
+# Data that is never shown as prose: ids, files, positions, internal lists.
+TECHNICAL = ("references", "files", "pairs", "colours", "type.families", "logo.variants")
+TECH_KEYS = {"id", "file", "path", "image", "detail", "thumb", "card", "photo", "licence_file", "template", "pos", "pos_detail",
+             "background", "colour", "on", "role", "kind", "slot", "demo", "category", "key", "level", "icon", "family",
+             "fallback", "status", "profile", "logo_on", "text_colour", "headline_at", "hero_on", "cover_colour", "language", "date", "by"}
 
 
 def error(msg):
@@ -153,6 +166,46 @@ def check(brand, root):
     for sid, data in present.items():
         if data and not sections.get(sid):
             warn(f"sections.{sid}: no headline; write the rule as a statement (\"The variant changes the colour, not the layout\"), not the topic")
+    if not meta.get("home"):
+        warn("meta.home is missing: say where the current version of the book and the files lives (a link or a shared folder); a book nobody can find goes unused")
+    rules = (brand.get("quickref") or {}).get("rules") or []
+    if not rules:
+        warn("quickref.rules is missing: the quick reference falls back to the section headlines; write up to five rules someone needs on the first day")
+    elif len(rules) > 5:
+        warn(f"quickref.rules has {len(rules)} rules; the quick reference shows five")
+
+    # strategy and voice: the text people copy
+    strategy, voice = brand.get("strategy") or {}, brand.get("voice") or {}
+    if strategy:
+        if not strategy.get("audience"):
+            warn("strategy.audience is missing: whom the brand serves best, in their situation")
+        if not strategy.get("instead_of") and not strategy.get("alternatives"):
+            warn("strategy.instead_of (or alternatives) is missing: what the customer would do without the brand; positioning starts there")
+        for i, p in enumerate(strategy.get("proof") or []):
+            if isinstance(p, str):
+                warn(f"strategy.proof[{i}] is a plain string; give {{fact, source, date}} so the number can be checked and refreshed: {p[:50]!r}")
+            elif not (p.get("source") and p.get("date")):
+                warn(f"strategy.proof[{i}] has no source or date: {str(p.get('fact', ''))[:50]!r}")
+    if voice:
+        situations = voice.get("situations") or []
+        if len(situations) < 3:
+            warn(f"voice.situations has {len(situations)}; write 3–8 moments from the brand's real work (an enquiry, a quote, a refusal, a complaint), each with the line the brand writes and the one it doesn't")
+        for i, s in enumerate(situations):
+            for key in ("moment", "example"):
+                if not s.get(key):
+                    warn(f"voice.situations[{i}].{key} is missing")
+        bp = voice.get("boilerplate") or {}
+        if not (bp.get("line") and bp.get("short")):
+            warn("voice.boilerplate needs line (one sentence) and short (about fifty words): the description people paste into a profile, a listing or an offer")
+        else:
+            n1, n2 = len(bp["line"].split()), len(bp["short"].split())
+            if n1 > 30:
+                warn(f"voice.boilerplate.line has {n1} words; one sentence of up to about 25")
+            if not 30 <= n2 <= 80:
+                warn(f"voice.boilerplate.short has {n2} words; about fifty")
+        for i, f in enumerate(voice.get("fixed_lines") or []):
+            if not (f.get("text") and f.get("where")):
+                warn(f"voice.fixed_lines[{i}] needs text and where")
 
     # colours
     colours = brand.get("colours") or []
@@ -186,11 +239,11 @@ def check(brand, root):
             error(f"no colour with the role {need}")
     hexes = [c["hex"] for c in colours if re.fullmatch(r"#[0-9a-fA-F]{6}", str(c.get("hex", "")))]
     if any(near(x, "#F4F1EA", 30) for x in hexes) and any(near(x, "#D97757", 45) for x in hexes):
-        warn("the palette is close to the model default (warm cream with a terracotta accent); keep it only with a reason from the brand, written in strategy.rejected or the colour's notes")
+        warn("the palette is close to the model default (warm cream with a terracotta accent); keep it only with a reason from the brand, recorded in 02-system.md (not in the book: the client doesn't need the model's defaults)")
     bg_dark = [x for x in hexes if lum(x) < 0.02]
     acid = [x for x in hexes if max(rgb(x)) > 200 and (max(rgb(x)) - min(rgb(x))) > 150 and lum(x) > 0.5]
     if bg_dark and acid:
-        warn("the palette is close to the model default (near-black with one acid accent); keep it only with a reason from the brand")
+        warn("the palette is close to the model default (near-black with one acid accent); keep it only with a reason from the brand, recorded in 02-system.md")
 
     pairs = brand.get("pairs") or []
     if not pairs:
@@ -371,9 +424,25 @@ def check(brand, root):
                 warn(f"{rel} is listed but not built or rendered yet; run build_book.py and render.mjs, then check again")
             else:
                 error(f"file listed but not found: {rel}")
-    for d in brand.get("decisions") or []:
+    decisions = brand.get("decisions") or []
+    for d in decisions:
         if not d.get("who") or not d.get("by"):
             warn(f"decision {d.get('what')!r} has no person or date")
+    if len(decisions) > 6 and not any(d.get("blocks") for d in decisions):
+        warn(f"{len(decisions)} decisions and none marked blocks: the book shows the first six and counts the rest; mark the ones that stop someone using the book")
+    made_by = str(meta.get("made_by") or "").strip().lower()
+    for path, value in strings({k: v for k, v in brand.items() if k != "references"}):
+        leaf = re.sub(r"\[\d+\]", "", path).split(".")[-1]
+        if path.startswith(TECHNICAL) or leaf in TECH_KEYS or re.fullmatch(r"[\w./:@?=&%#-]+", value) and ("/" in value or "." in value):
+            continue
+        m = PROCESS.search(value)
+        if m:
+            error(f"{path} shows the build to the client ({m.group(0)!r}); write it for the reader and keep field names, files and notes in 01-verify.md or 02-system.md")
+        t = TOOLS.search(value)
+        if t:
+            warn(f"{path} names a tool ({t.group(0)!r}); generated images are marked with imagery.ai.label, the tool stays in prompts/")
+        if made_by and made_by in value.lower() and not path.startswith("meta.") and not path.endswith(".who"):
+            warn(f"{path} names {meta.get('made_by')}: the book speaks for the brand, the agency signs the cover")
     ref_names = [r.get("name") for r in brand.get("references") or [] if r.get("name")]
     for path, value in strings({k: v for k, v in brand.items() if k != "references"}):
         for n in ref_names:

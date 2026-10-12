@@ -52,6 +52,32 @@
     "It names at least: the small print below 1.2 mm x-height, the net quantity not next to the name, the plant claim, the date form, and the 50 g against 40 g mismatch",
     "It doesn't build a full brand book for this question"
    ]
+  },
+  {
+   "id": 4,
+   "prompt": "Zrób brandbook dla mojej firmy grzewczej. W folderze jest moja wiadomość, teksty z obecnej strony, opinie z Google i logo. Teksty na stronie są do niczego, chcę wiedzieć, jak mamy pisać. Bez pytań, rób na założeniach.",
+   "expected_output": "A brand/ folder for a service brand without labels: brand.json, the book (book/index.html) with the quick reference after the cover, a PDF of at most 20 pages, tokens.css, 00-input.md, 01-verify.md and 02-system.md, and a reply with the direction, what the book says about writing, the open decisions and what wasn't checked.",
+   "files": [
+    "evals/fixtures/brand-service/brief.md -> brief.md",
+    "evals/fixtures/brand-service/site-copy.md -> site-copy.md",
+    "evals/fixtures/brand-service/reviews.md -> reviews.md",
+    "evals/fixtures/brand-service/logo.svg -> logo.svg"
+   ],
+   "assertions": [
+    "check_brand.py and render.mjs check end without errors on the final brand/ folder; labels is empty and the book doesn't mention labels",
+    "The second slide is the quick reference: the logo, the core colours, the typeface with its office substitute, up to five rules, the owner's contact and where the current version lives (or an open decision about it)",
+    "strategy.audience and strategy.alternatives come from the brief (the cheaper crews from OLX, the installer the manufacturer recommends, doing nothing out of fear of the subsidy or an old house) and both are visible in the book",
+    "voice.situations has at least four moments from the firm's work (a quote, a subsidy question, a breakdown call, a delay, a bad review or a complaint), each with the line the firm writes and the one it doesn't, and they appear on a slide",
+    "voice.boilerplate has a one-sentence and an about-fifty-word description built from facts in the files (since 2014, 212 heat pumps, the audit before installation), with none of the site's phrases (kompleksowe, najwyższej jakości, z pasją, partner w biznesie, innowacyjne)",
+    "strategy.proof entries have a source and a date (4,9 from 87 reviews as of 10.10.2026, 212 pumps as of 30.09.2026, 131 of 140 applications approved)",
+    "The site's promises 'gwarantujemy dotację', 'najniższe ceny na rynku' and 'serwis 24/7' are not reused: the book promises help with the application, not the subsidy, and 01-verify.md lists them with who confirms what may be promised",
+    "logo.partners states how the manufacturers' logos stand next to the firm's (the firm's logo leads), and 01-verify.md asks who confirms permission to use them on the van and the site",
+    "meta.company has the name, the NIP and the address from the brief and no KRS or share capital (a sole trader)",
+    "No field names, build paths, tool names or the agency's name appear in the book outside the cover (render.mjs check reports none)",
+    "The PDF of the book has at most 20 pages",
+    "The logo comes from the supplied SVG and isn't redrawn; 01-verify.md or the reply notes the live text in Arial to be outlined by a designer",
+    "render.mjs check reports no slide with more than 90 words of prose, and the book has about 1,500 words of prose or fewer"
+   ]
   }
  ]
 }

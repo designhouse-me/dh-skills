@@ -13,7 +13,10 @@
 // check, book (at 1440 and 390 px): horizontal scroll, images that didn't load, page errors, each brand font
 // loaded and covering the language's letters (ą ć ę ł ń ó ś ź ż „ ” for Polish; the text is measured with two
 // different fallbacks, equal widths mean no fallback glyph was used), logos in mockups smaller than their own
-// min_px, generated images on a slide whose footer doesn't say so, text under 12 px (warning).
+// min_px, generated images on a slide whose footer doesn't say so, text under 12 px (warning). Text: every strategy
+// and voice field the data has is on a slide (a custom template that drops one is an error); field names and
+// the skill's files in the slides' text (error); tool names, file paths outside the files and quick reference,
+// the agency outside the cover, more than 90 words of prose on a slide (warnings).
 // check, labels: zone overflow in both axes, mandatory text ([data-legal]) x-height measured in the browser
 // against 1.2 mm (0.9 mm when the largest surface is under 80 cm²) for food and supplements, the height of the
 // net quantity's figures (2/3/4/6 mm by quantity), text contrast on the label colour, fonts, images.
@@ -245,6 +248,50 @@ const BOOK_PROBE = `(() => {
   return { wide: wide.slice(0, 6), broken, logos, uncaptioned, small, smallEx, cut };
 })()`;
 
+// TEXT: the data's strategy and voice fields found in the slides (textContent, so CSS case changes don't matter),
+// and the build showing through in what a reader sees (innerText per slide).
+const TEXT_PROBE = `(() => {
+  const d = JSON.parse(document.getElementById("brand-data").textContent);
+  const main = document.getElementById("main");
+  const norm = (s) => String(s || "").replace(/[„”“"«»‚’'\\u00a0]/g, " ").replace(/\\s+/g, " ").trim().toLowerCase();
+  const all = norm(main.textContent);
+  const s = d.strategy || {}, v = d.voice || {}, m = d.meta || {}, co = m.company || {};
+  const one = (x) => (Array.isArray(x) ? x[0] : x);
+  const p0 = one(s.proof), sit0 = one(v.situations) || {};
+  const want = [
+    ["strategy.purpose", s.purpose], ["strategy.audience", s.audience],
+    ["strategy.instead_of", (s.alternatives || []).length ? null : s.instead_of], ["strategy.alternatives", (one(s.alternatives) || {}).alternative],
+    ["strategy.proof", p0 && (typeof p0 === "string" ? p0 : p0.fact)], ["quickref.rules", one((d.quickref || {}).rules)],
+    ["voice.situations", sit0.example || sit0.moment], ["voice.boilerplate.line", (v.boilerplate || {}).line], ["voice.boilerplate.short", (v.boilerplate || {}).short],
+    ["voice.fixed_lines", (one(v.fixed_lines) || {}).text], ["voice.name_rule", v.name_rule], ["meta.company", co.tax_id || co.name], ["meta.home", m.home]
+  ];
+  const missing = want.filter(([, t]) => t && !all.includes(norm(t).slice(0, 48))).map(([k]) => k);
+  const FIELD = /\\b[a-z]+(?:_[a-z0-9]+)+\\b|\\b(?:meta|strategy|voice|logo|colours|imagery|labels|print|decisions|sections|quickref)\\.(?!(?:png|svg|jpe?g|pdf|ttf|otf|woff2?|webp|css|html)\\b)[a-z_]+|brand\\.json|build_book|check_brand|render\\.mjs|\\?reader=|\\b0[0-2]-(?:input|verify|system)\\b/;
+  const TOOL = /\\b(OpenAI|ImageGen|gpt-image|DALL[·-]?E|Midjourney|Stable Diffusion|Codex|ChatGPT|Gemini|Firefly|Ideogram)\\b/i;
+  const PATH = /(?:^|\\s)[a-z][a-z0-9_.-]{2,}\\/[\\w.-]{3,}|\\b[\\w-]+\\.(?:json|css|html|mjs|py|log)\\b/;
+  const agency = String(m.made_by || "").trim().toLowerCase();
+  const fields = [], tools = [], paths = [], named = [];
+  for (const f of main.querySelectorAll(".frame")) {
+    const t = f.innerText || "", where = "slide " + (f.querySelector(".pno")?.textContent || "?");
+    const sec = f.closest("section")?.id || (f.classList.contains("cover") ? "cover" : "");
+    const a = t.match(FIELD); if (a) fields.push(where + ": " + a[0]);
+    const b = t.match(TOOL); if (b) tools.push(where + ": " + b[0]);
+    const c = !["files", "start"].includes(sec) && t.match(PATH); if (c) paths.push(where + ": " + c[0].trim());
+    if (agency && !["cover", "decisions"].includes(sec) && !f.classList.contains("closing") && t.toLowerCase().includes(agency)) named.push(where);
+  }
+  // Prose per slide: tables of values, mockups, photos, footers, the label checklist and text meant to be pasted (.paste) don't count.
+  const prose = [];
+  let total = 0;
+  for (const f of main.querySelectorAll(".frame")) {
+    const c = f.cloneNode(true);
+    c.querySelectorAll("table, .mock, .bcard, .sig, figure, .foot, .pno, .vals, .paste, .chk, iframe, script, style").forEach((x) => x.remove());
+    const n = (c.textContent.match(/[\\p{L}\\p{N}][\\p{L}\\p{N}'’.,%–-]*/gu) || []).length;
+    total += n;
+    if (n > 90) prose.push("slide " + (f.querySelector(".pno")?.textContent || "?") + " (" + n + ")");
+  }
+  return { missing, fields, tools, paths, named, prose, total };
+})()`;
+
 const LABEL_PROBE = `(() => {
   const d = JSON.parse(document.getElementById("label-data").textContent);
   const L = d.label, f = L.format;
@@ -300,6 +347,14 @@ async function checkBook(file) {
       for (const u of r.uncaptioned) err(`book: generated image on a slide whose footer doesn't name it (imagery.ai.label): ${u}`);
       for (const c of r.cut) err(`book: text runs out of its tile on ${c}; shorten it in brand.json`);
       if (r.small) warn(`book: ${r.small} text fragments under 12 px, e.g. ${r.smallEx.join("; ")}`);
+      const tx = await p.evaluate(TEXT_PROBE);
+      for (const k of tx.missing) err(`book: ${k} is in brand.json but on no slide; the template must show every strategy and voice field (references/data.md, section 9)`);
+      for (const f of tx.fields) err(`book: the build shows through on ${f}; write it for the reader in brand.json`);
+      for (const f of tx.tools) warn(`book: a tool is named on ${f}; mark generated images with imagery.ai.label, keep the tool in prompts/`);
+      for (const f of tx.paths) warn(`book: a file path on ${f}; paths belong on the files slide`);
+      if (tx.named.length) warn(`book: the agency is named on ${tx.named.join(", ")}; the book speaks for the brand, the agency signs the cover`);
+      if (tx.prose.length) warn(`book: more than 90 words of prose on ${tx.prose.join(", ")}; one rule per slide, show it instead of explaining it (tables of values don't count)`);
+      console.log(`book: ${tx.total} words of prose on the slides (a small brand's book stays under about 1500)`);
       for (const pr of [...new Set(p.problems)]) err(`book: page error: ${pr}`);
     }
     await p.close();

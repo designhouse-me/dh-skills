@@ -76,6 +76,16 @@ s { text-decoration-thickness: 2px; }
 .tb th { font: 500 14px/1.2 var(--text); text-align: left; padding: 0 14px 10px 0; opacity: 0.6; white-space: nowrap; }
 .tb td { padding: 10px 14px 10px 0; border-top: 1px solid color-mix(in srgb, currentColor 16%, transparent); font: 400 17px/1.35 var(--text); vertical-align: top; }
 .tb td:first-child { font-weight: 500; }
+/* positioning, situations and the quick reference: tables people read, so text stays at 18–21 px */
+.tb.alt td { font: 400 23px/1.36 var(--text); padding: 20px 24px 20px 0; }
+.tb.alt td.k { font-family: var(--display); font-size: 27px; line-height: 1.2; }
+.tb.sit td { font: 400 19px/1.38 var(--text); padding: 14px 20px 14px 0; }
+.tb.sit td.ex { font-family: var(--display); font-size: 22px; line-height: 1.3; }
+.tb.sit td.no { color: var(--ink-2); text-decoration: line-through; text-decoration-color: color-mix(in srgb, currentColor 45%, transparent); }
+ul.proof { list-style: none; margin-top: 10px; }
+ul.proof li { padding: 12px 0; border-top: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
+ul.proof b { display: block; font: 400 21px/1.3 var(--display); }
+ul.proof span { display: block; margin-top: 4px; font: 400 14.5px/1.4 var(--text); opacity: 0.72; }
 
 /* colour values */
 .vals { display: grid; font: 400 14px/1.3 var(--text); font-variant-numeric: tabular-nums; }
@@ -162,7 +172,7 @@ const T = {
     readers: { all: "Wszystko", owner: "Właściciel", designer: "Grafik", printer: "Drukarnia", marketing: "Marketing" },
     part1: "Marka", part1Lead: "Po co marka istnieje, jak mówi i jak wygląda w użyciu.",
     part2: "Zasady", part2Lead: "Logo, kolor, pismo, zdjęcia, etykiety i druk. Liczby, pliki i zakazy.",
-    topics: { strategy: "Strategia", voice: "Język", applications: "Zastosowania", logo: "Logo", colour: "Kolor", type: "Pismo", imagery: "Zdjęcia i obrazy", labels: "Etykiety", print: "Druk", files: "Pliki i wersje", decisions: "Decyzje" },
+    topics: { start: "Na skróty", strategy: "Strategia", voice: "Język", applications: "Zastosowania", logo: "Logo", colour: "Kolor", type: "Pismo", imagery: "Zdjęcia i obrazy", labels: "Etykiety", print: "Druk", files: "Pliki i wersje", decisions: "Decyzje" },
     version: "Wersja", date: "Data", owner: "Właściciel", contact: "Kontakt", madeBy: "Przygotował", status: "Status", draft: "wersja robocza", approved: "zatwierdzony",
     purpose: "Po co istniejemy", audience: "Dla kogo", insteadOf: "Zamiast czego", proof: "Na dowód", values: "Wartości w działaniu", rules: "Gdy księga nie wie", signature: "Nasz znak rozpoznawczy", rejected: "Czego świadomie unikamy",
     traits: "Jak brzmimy", isNot: "ale nie", tone: "Ton w kanałach", channel: "Kanał", how: "Jak", example: "Przykład", wordsUse: "Mówimy", wordsAvoid: "Nie mówimy", beforeAfter: "Przed i po", before: "Było", after: "Jest", nameRule: "Pisownia nazwy", claims: "Oświadczenia, których wolno używać", registerRef: "rejestr",
@@ -179,15 +189,14 @@ const T = {
     preview: "Podgląd", guides: "Siatka i strefy", format: "Format", bleed: "spad", safe: "margines bezpieczeństwa", zones: "Strefy", front: "Front, od najważniejszego", brandMark: "Marka (logo)", net: "Ilość netto", mandatory: "Treści obowiązkowe", present: "jest", missingT: "brak", templateNote: "To szablon do pracy, nie plik do druku. Plik do druku przygotowuje grafik według specyfikacji druku.", exempt: "Zwolnienie",
     printSpec: "Specyfikacja", handoff: "Przed wysłaniem do drukarni", printer: "Drukarnia", technology: "Technologia", pdf: "Plik", profile: "Profil CMYK", smallText: "Drobny tekst", finishes: "Uszlachetnienia", proofL: "Próbny wydruk", notChosen: "jeszcze nie wybrana",
     filePath: "Plik", what: "Co to jest", printReady: "Do druku", yes: "tak", noWord: "nie",
-    decWhat: "Decyzja", decWho: "Kto", decBy: "Do kiedy", decRec: "Nasza rekomendacja", changelog: "Historia zmian",
-    colophon: (b) => `${b.meta.name}, brandbook ${b.meta.version}, ${b.meta.date}.`
+    decWhat: "Decyzja", decWho: "Kto", decBy: "Do kiedy", decRec: "Nasza rekomendacja", changelog: "Historia zmian"
   },
   en: {
     skip: "Skip to content", reader: "Reading as", menu: "Contents",
     readers: { all: "Everything", owner: "Owner", designer: "Designer", printer: "Printer", marketing: "Marketing" },
     part1: "Brand", part1Lead: "Why the brand exists, how it speaks and how it looks in use.",
     part2: "Rules", part2Lead: "Logo, colour, type, imagery, labels and print. Numbers, files and don'ts.",
-    topics: { strategy: "Strategy", voice: "Voice", applications: "Applications", logo: "Logo", colour: "Colour", type: "Type", imagery: "Imagery", labels: "Labels", print: "Print", files: "Files and versions", decisions: "Decisions" },
+    topics: { start: "Quick reference", strategy: "Strategy", voice: "Voice", applications: "Applications", logo: "Logo", colour: "Colour", type: "Type", imagery: "Imagery", labels: "Labels", print: "Print", files: "Files and versions", decisions: "Decisions" },
     version: "Version", date: "Date", owner: "Owner", contact: "Contact", madeBy: "Made by", status: "Status", draft: "draft", approved: "approved",
     purpose: "Why we exist", audience: "For whom", insteadOf: "Instead of", proof: "Proof", values: "Values in action", rules: "When the book doesn't say", signature: "Our signature", rejected: "What we avoid on purpose",
     traits: "How we sound", isNot: "but not", tone: "Tone by channel", channel: "Channel", how: "How", example: "Example", wordsUse: "We say", wordsAvoid: "We don't say", beforeAfter: "Before and after", before: "Before", after: "After", nameRule: "Spelling the name", claims: "Claims we may use", registerRef: "register",
@@ -204,8 +213,7 @@ const T = {
     preview: "Preview", guides: "Grid and zones", format: "Format", bleed: "bleed", safe: "safe margin", zones: "Zones", front: "Front, most important first", brandMark: "Brand (logo)", net: "Net quantity", mandatory: "Mandatory content", present: "present", missingT: "missing", templateNote: "This is a working template, not a print file. The designer prepares the print file from the print specification.", exempt: "Exemption",
     printSpec: "Specification", handoff: "Before sending to the printer", printer: "Printer", technology: "Technology", pdf: "File", profile: "CMYK profile", smallText: "Small text", finishes: "Finishes", proofL: "Proof", notChosen: "not chosen yet",
     filePath: "File", what: "What it is", printReady: "Print-ready", yes: "yes", noWord: "no",
-    decWhat: "Decision", decWho: "Who", decBy: "By", decRec: "Our recommendation", changelog: "Changelog",
-    colophon: (b) => `${b.meta.name}, brand book ${b.meta.version}, ${b.meta.date}.`
+    decWhat: "Decision", decWho: "Who", decBy: "By", decRec: "Our recommendation", changelog: "Changelog"
   }
 }[LANG];
 Object.assign(T, LANG === "pl" ? {
@@ -213,13 +221,27 @@ Object.assign(T, LANG === "pl" ? {
   rulesLead: (list) => `${list}: zasady dla osób, które projektują i drukują materiały marki.`,
   ruleWords: { logo: "logo", colour: "kolor", type: "pismo", imagery: "zdjęcia", labels: "etykiety", print: "druk" }, and: "i",
   labelSlide: "Etykieta", more: "ciąg dalszy", products: "Linia produktów", templateShort: "Szablon etykiety, nie plik do druku.",
-  howWe: "Jak fotografujemy", aiShort: "Obrazy z AI"
+  howWe: "Jak fotografujemy", aiShort: "Obrazy z AI",
+  subShort: "Zamiennik", start: "Na skróty", quickTitle: "Pierwszego dnia wystarczy ta strona.", quickRules: "Zasady na co dzień", quickLogo: "Logo do pobrania", quickColours: "Kolory", quickType: "Pismo", quickAsk: "Pytania i pliki", home: "Aktualna wersja", company: "Dane firmy na ofertach",
+  positioning: "Zamiast czego", alternative: "Zamiast nas klient", problem: "Co wtedy traci", we: "Co robimy my", category: "Porównują nas z", asOf: "stan na",
+  inPractice: "W praktyce", moment: "Sytuacja", ruleCol: "Zasada", write: "Piszemy", avoidCol: "Nie piszemy",
+  boilerplate: "Opis do wklejenia", boilerLine: "W jednym zdaniu", boilerShort: "W pięćdziesięciu słowach", fixed: "Stałe linie", editorial: "Redakcja",
+  partners: "Obok logo partnerów",
+  moreDecisions: (n) => { const few = n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14); return `Na liście do przekazania ${few ? "są" : "jest"} jeszcze ${n} ${n === 1 ? "decyzja" : few ? "decyzje" : "decyzji"}.`; },
+  pantoneOpen: "Pantone do ustalenia, patrz decyzje."
 } : {
   partWord: "Part", keys: "The up and down arrow keys move between slides.", viz: "Visualisation",
   rulesLead: (list) => `${list}: rules for the people who design and print the brand's materials.`,
   ruleWords: { logo: "logo", colour: "colour", type: "type", imagery: "imagery", labels: "labels", print: "print" }, and: "and",
   labelSlide: "Label", more: "continued", products: "The product line", templateShort: "A label template, not a print file.",
-  howWe: "How we photograph", aiShort: "AI images"
+  howWe: "How we photograph", aiShort: "AI images",
+  subShort: "Substitute", start: "Quick reference", quickTitle: "On the first day, this page is enough.", quickRules: "Everyday rules", quickLogo: "Logo to download", quickColours: "Colours", quickType: "Type", quickAsk: "Questions and files", home: "Current version", company: "Company details for offers",
+  positioning: "Instead of what", alternative: "Instead of us, the customer", problem: "What goes wrong there", we: "What we do", category: "Compared with", asOf: "as of",
+  inPractice: "In practice", moment: "Situation", ruleCol: "Rule", write: "We write", avoidCol: "We don't write",
+  boilerplate: "Description to paste", boilerLine: "In one sentence", boilerShort: "In fifty words", fixed: "Fixed lines", editorial: "House style",
+  partners: "Next to partners' logos",
+  moreDecisions: (n) => `${n} more ${n === 1 ? "decision is" : "decisions are"} on the handover list.`,
+  pantoneOpen: "Pantone to decide, see decisions."
 });
 document.documentElement.lang = LANG;
 
@@ -230,7 +252,7 @@ const REQUIRED = {
   cosmetic: ["responsible_person", "nominal_content", "durability_or_pao", "precautions", "batch", "function", "ingredients_inci"]
 };
 const READERS = {
-  strategy: ["owner", "marketing", "designer"], voice: ["marketing", "owner"], applications: ["owner", "marketing", "designer"],
+  start: ["owner", "marketing", "designer", "printer"], strategy: ["owner", "marketing", "designer"], voice: ["marketing", "owner"], applications: ["owner", "marketing", "designer"],
   imagery: ["marketing", "designer"], logo: ["designer", "printer", "marketing"], colour: ["designer", "printer", "marketing"],
   type: ["designer", "marketing"], labels: ["designer", "printer"], print: ["printer", "designer"],
   files: ["owner", "designer", "printer", "marketing"], decisions: ["owner", "designer"]
@@ -354,16 +376,21 @@ function mockup(a, boxW) {
     h("div", { style: { position: "relative" } },
       h("div", { style: { fontFamily: "var(--display)", fontSize: px(k.w * (k.mm ? 0.07 : 0.085)), lineHeight: 1.02, letterSpacing: "-0.02em" } }, a.headline || ""),
       a.text ? h("div", { style: { marginTop: px(k.w * 0.02), fontSize: px(k.w * (k.mm ? 0.04 : 0.032)), opacity: 0.85 } }, a.text) : null));
-  return h("div", { style: { position: "relative", width: px(boxW), height: px(k.h * s), borderRadius: "12px", overflow: "hidden", boxShadow: a.image ? null : edge(c.hex) } }, canvas);
+  return h("div", { class: "mock", style: { position: "relative", width: px(boxW), height: px(k.h * s), borderRadius: "12px", overflow: "hidden", boxShadow: a.image ? null : edge(c.hex) } }, canvas);
 }
 
 /* ---------- slides by section ---------- */
 const sec = B.sections || {};
 const S = {};
 
+/* Proof is {fact, source, date}; a plain string still renders. */
+const proofs = ((B.strategy || {}).proof || []).map((p) => (typeof p === "string" ? { fact: p } : p)).filter((p) => p.fact);
+const alts = ((B.strategy || {}).alternatives || []).filter((a) => a.alternative);
+/* Positioning gets its own slide when there is a comparison or dated proof; the intro slide then keeps only the signature. */
+const positioning = alts.length > 0 || proofs.some((p) => p.source || p.date);
 S.strategy = (code) => {
   const s = B.strategy, out = [];
-  const facts = [[T.audience, s.audience], [T.insteadOf, s.instead_of], [T.signature, s.signature]].filter(([, v]) => v);
+  const facts = (positioning ? [[T.signature, s.signature]] : [[T.audience, s.audience], [T.insteadOf, s.instead_of], [T.signature, s.signature]]).filter(([, v]) => v);
   const right = imgSlot("intro");
   const pair = PAL.filter((c) => c !== feature).slice(0, 2);
   out.push(frame([
@@ -377,6 +404,22 @@ S.strategy = (code) => {
       : [tile(1160, M, 720, 600, h("div", { class: "abs", style: { inset: 0, display: "grid", placeItems: "center" } }, logoImg(featureLogo, 380)), { bg: feature.hex }),
         ...pair.map((c, i) => tile(1160 + i * (352 + G), M + 600 + G, 352, CH - 600 - G, inside(capOn(c.name)), { bg: c.hex }))]
   ], { cap: T.topics.strategy }));
+  if (positioning) {
+    const kids = [head(code, "strategy", sec.positioning || T.positioning)];
+    const lw = 1180, rw = CW - lw - G;
+    const left = alts.length
+      ? [s.instead_of ? h("p", { class: "disp", style: { fontSize: "36px", lineHeight: 1.18, marginBottom: "34px", maxWidth: "1040px" } }, s.instead_of) : null, h("table", { class: "tb alt" }, h("thead", {}, h("tr", {}, h("th", {}, T.alternative), h("th", {}, T.problem), h("th", {}, T.we))),
+          h("tbody", {}, alts.slice(0, 5).map((a) => h("tr", {}, h("td", { class: "k" }, a.alternative), h("td", {}, a.problem || ""), h("td", { class: "k" }, a.we || "")))))]
+      : h("div", {}, h("p", { class: "cap" }, T.insteadOf), h("p", { class: "disp", style: { fontSize: "40px", lineHeight: 1.18, marginTop: "14px" } }, s.instead_of || ""));
+    kids.push(tile(M, TOP, lw, CH2, inside(left, { top: "30px" }), { bg: "var(--panel)", text: true }));
+    kids.push(tile(M + lw + G, TOP, rw, CH2, inside([
+      s.audience ? [capOn(T.audience), h("p", { class: "body", style: { marginTop: "8px", fontSize: "19px" } }, s.audience)] : null,
+      s.category ? [h("p", { class: "cap", style: { color: "inherit", opacity: 0.7, marginTop: "22px" } }, T.category), h("p", { class: "body", style: { marginTop: "8px", fontSize: "19px" } }, s.category)] : null,
+      proofs.length ? [h("p", { class: "cap", style: { color: "inherit", opacity: 0.7, marginTop: "22px" } }, T.proof), h("ul", { class: "proof" }, proofs.slice(0, 5).map((p) => h("li", {}, h("b", {}, p.fact),
+        p.source || p.date ? h("span", {}, [p.source, p.date ? `${T.asOf} ${p.date}` : null].filter(Boolean).join(", ")) : null)))] : null
+    ], { top: "30px" }), { bg: feature.hex, text: true }));
+    out.push(frame(kids, { cap: T.topics.strategy }));
+  }
   const vals = (s.values || []).slice(0, 4);
   const rules = s.decision_rules || [], rej = s.rejected || [];
   if (vals.length || rules.length || rej.length) {
@@ -403,7 +446,10 @@ S.voice = (code) => {
   const leftW = tone.length ? 880 : CW;
   // One before/after pair and a name rule without claims don't fill a slide: they take the bottom row of this one.
   const ba = (v.before_after || []).slice(0, 2);
-  const fold = tone.length && ba.length <= 1 && !(v.claims || []).length && (ba.length || v.name_rule);
+  const sit = (v.situations || []).filter((x) => x.moment);
+  const boiler = v.boilerplate && (v.boilerplate.line || v.boilerplate.short) ? v.boilerplate : null;
+  const fixedL = (v.fixed_lines || []).filter((x) => x.text), edit = v.editorial || [];
+  const fold = tone.length && ba.length <= 1 && !(v.claims || []).length && !sit.length && !boiler && !fixedL.length && !edit.length && (ba.length || v.name_rule);
   const toneH = 560, rowY = TOP + toneH + G, rowH = CH2 - toneH - G;
   kids.push(tile(M, TOP, leftW, fold ? toneH : CH2, inside(h("div", { style: { display: "grid", gap: "24px" } }, capOn(T.traits),
     traits.map((t) => h("div", {}, h("p", { class: "disp", style: { fontSize: "48px", lineHeight: 1.05 } }, `${t.is},`),
@@ -436,19 +482,46 @@ S.voice = (code) => {
     kids.push(tile(x, rowY, w, rowH, words({ top: "28px" }), { bg: "var(--panel)", text: true }));
   }
   out.push(frame(kids, { cap: T.topics.voice }));
-  if (ba.length || v.name_rule || (v.claims || []).length) {
-    const k2 = [head(code, "voice", T.beforeAfter)];
-    const bh = ba.length ? 470 : 0, hh = ba.length ? (bh - G * (ba.length - 1)) / ba.length : 0;
-    ba.forEach((p, i) => {
-      const y = TOP + i * (hh + G);
-      k2.push(tile(M, y, (CW - G) / 2, hh, inside([h("p", { class: "cap" }, T.before), h("p", { class: "disp", style: { fontSize: "34px", lineHeight: 1.2, marginTop: "10px", color: "var(--ink-2)" } }, h("s", {}, p.before))]), { bg: "var(--panel)", text: true }));
-      k2.push(tile(M + (CW + G) / 2, y, (CW - G) / 2, hh, inside([capOn(T.after), h("p", { class: "disp", style: { fontSize: "34px", lineHeight: 1.2, marginTop: "10px" } }, p.after)]), { bg: feature.hex, text: true }));
+  /* "In practice": the situations (with any before/after pairs as rows) above, the lines people paste below.
+     Without situations the before/after pairs keep their large tiles. */
+  const ready = [
+    boiler ? "boiler" : null,
+    v.name_rule || edit.length ? "name" : null,
+    fixedL.length || (v.claims || []).length ? "fixed" : null].filter(Boolean);
+  if (ba.length || sit.length || ready.length) {
+    const k2 = [head(code, "voice", sit.length || boiler ? T.inPractice : T.beforeAfter)];
+    const readyH = ready.length ? (sit.length || ba.length ? 330 : CH2) : 0;
+    const topH = CH2 - (ready.length ? readyH + G : 0);
+    if (sit.length) {
+      const rows = sit.map((x) => [x.moment, x.rule, x.example, x.avoid]).concat(ba.map((p) => [T.beforeAfter, "", p.after, p.before])).slice(0, 6);
+      const withRule = sit.some((x) => x.rule);
+      k2.push(tile(M, TOP, CW, topH, inside(h("table", { class: "tb sit" },
+        h("thead", {}, h("tr", {}, h("th", { style: { width: "250px" } }, T.moment), withRule ? h("th", { style: { width: "430px" } }, T.ruleCol) : null, h("th", {}, T.write), h("th", { style: { width: withRule ? "430px" : "560px" } }, T.avoidCol))),
+        h("tbody", {}, rows.map(([m, r, ex, no]) => h("tr", {}, h("td", {}, m), withRule ? h("td", {}, r || "") : null, h("td", { class: "ex" }, ex ? h("q", {}, ex) : ""), h("td", { class: "no" }, no || ""))))), { top: "28px" }), { bg: "var(--panel)", text: true }));
+    } else if (ba.length) {
+      const hh = (topH - G * (ba.length - 1)) / ba.length;
+      ba.forEach((p, i) => {
+        const y = TOP + i * (hh + G);
+        k2.push(tile(M, y, (CW - G) / 2, hh, inside([h("p", { class: "cap" }, T.before), h("p", { class: "disp", style: { fontSize: "34px", lineHeight: 1.2, marginTop: "10px", color: "var(--ink-2)" } }, h("s", {}, p.before))]), { bg: "var(--panel)", text: true }));
+        k2.push(tile(M + (CW + G) / 2, y, (CW - G) / 2, hh, inside([capOn(T.after), h("p", { class: "disp", style: { fontSize: "34px", lineHeight: 1.2, marginTop: "10px" } }, p.after)]), { bg: feature.hex, text: true }));
+      });
+    }
+    const ry = TOP + (ready.length && (sit.length || ba.length) ? topH + G : 0);
+    const rw = (CW - (ready.length - 1) * G) / Math.max(ready.length, 1);
+    ready.forEach((kind, i) => {
+      const x = M + i * (rw + G);
+      if (kind === "boiler") k2.push(tile(x, ry, rw, readyH, inside([capOn(T.boilerplate),
+        boiler.line ? h("p", { class: "disp paste", style: { fontSize: "23px", lineHeight: 1.28, marginTop: "10px" } }, boiler.line) : null,
+        boiler.short ? h("p", { class: "small paste", style: { marginTop: "12px", opacity: 0.85 } }, boiler.short) : null], { top: "26px" }), { bg: feature.hex, text: true }));
+      if (kind === "name") k2.push(tile(x, ry, rw, readyH, inside([
+        v.name_rule ? [h("p", { class: "cap" }, T.nameRule), h("p", { class: "body", style: { marginTop: "8px" } }, v.name_rule)] : null,
+        edit.length ? [h("p", { class: "cap", style: { marginTop: v.name_rule ? "16px" : 0 } }, T.editorial), h("ul", { class: "d2", style: { marginTop: "10px", font: "400 14.5px/1.4 var(--text)" } }, edit.slice(0, 5).map((x) => h("li", { style: { marginBottom: "6px" } }, x)))] : null], { top: "26px" }),
+        { bg: mix((PAL[1] || feature).hex, 30), fg: "var(--ink)", text: true }));
+      if (kind === "fixed") k2.push(tile(x, ry, rw, readyH, inside([
+        fixedL.length ? [h("p", { class: "cap" }, T.fixed), fixedL.slice(0, 3).map((f) => h("div", { style: { marginTop: "10px" } }, h("p", { class: "body" }, h("q", {}, f.text)), f.where ? h("p", { class: "small", style: { color: "var(--ink-2)" } }, f.where) : null))] : null,
+        (v.claims || []).length ? [h("p", { class: "cap", style: { marginTop: fixedL.length ? "16px" : 0 } }, T.claims), h("ul", { class: "d2", style: { marginTop: "10px", font: "400 15px/1.45 var(--text)" } }, v.claims.slice(0, 4).map((c) => h("li", {}, c.text, c.register_ref ? ` (${T.registerRef}: ${c.register_ref})` : "")))] : null], { top: "26px" }),
+        { bg: "var(--panel)", text: true }));
     });
-    const y2 = TOP + (ba.length ? bh + G : 0);
-    k2.push(tile(M, y2, CW, 1040 - y2, inside(h("div", { style: { display: "grid", gridTemplateColumns: (v.claims || []).length ? "1fr 1fr" : "1fr", gap: "56px" } },
-      v.name_rule ? h("div", {}, h("p", { class: "cap" }, T.nameRule), h("p", { class: "disp", style: { fontSize: "26px", lineHeight: 1.3, marginTop: "10px" } }, v.name_rule)) : h("div"),
-      (v.claims || []).length ? h("div", {}, h("p", { class: "cap" }, T.claims), h("ul", { class: "d2", style: { marginTop: "12px", font: "400 16px/1.45 var(--text)" } }, v.claims.slice(0, 4).map((c) => h("li", {}, c.text, c.register_ref ? ` (${T.registerRef}: ${c.register_ref})` : "")))) : null)),
-      { bg: mix((PAL[1] || feature).hex, 30), fg: "var(--ink)", text: true }));
     out.push(frame(k2, { cap: T.topics.voice }));
   }
   return out;
@@ -568,10 +641,14 @@ S.logo = (code) => {
       h("p", { class: "abs small", style: { left: "32px", bottom: "26px", right: "32px" } }, h("b", {}, v.name || v.id), `  ${T.minSize.toLowerCase()} ${v.min_px} px / ${v.min_mm} mm`)], { bg: c.hex, text: true }));
   });
   out.push(frame(kids, { cap: T.topics.logo }));
-  const donts = (L.dont || []).slice(0, 4);
+  const partners = L.partners && L.partners.rule ? L.partners : null;
+  const donts = (L.dont || []).slice(0, partners ? 3 : 4);
   if (donts.length) {
     const k2 = [head(code, "logo", T.donts)];
-    const dw = (CW - (donts.length - 1) * G) / donts.length;
+    const cols = donts.length + (partners ? 1 : 0);
+    const dw = (CW - (cols - 1) * G) / cols;
+    if (partners) k2.push(tile(M + donts.length * (dw + G), TOP, dw, 650 + G, inside([capOn(T.partners), h("p", { class: "body", style: { marginTop: "10px", fontSize: "18px" } }, partners.rule),
+      (partners.dont || []).length ? h("ul", { class: "d2", style: { marginTop: "14px", font: "400 15px/1.45 var(--text)" } }, partners.dont.slice(0, 3).map((x) => h("li", {}, x))) : null], { top: "28px" }), { bg: feature.hex, text: true }));
     donts.forEach((d, i) => {
       const st = {};
       if (d.demo === "stretch") st.transform = "scaleX(1.5)";
@@ -600,6 +677,11 @@ S.logo = (code) => {
 S.colour = (code) => {
   const out = [], order = ["background", "text", "accent", "secondary-text", "line", "support"];
   const sorted = colours.slice().sort((a, b) => order.indexOf(a.role) - order.indexOf(b.role));
+  // What is the same for every colour is said once, in the footer, not repeated on each tile.
+  const noPantone = colours.every((c) => !((c.pantone || {}).c || (c.pantone || {}).u));
+  const statuses = [...new Set(colours.map((c) => (c.cmyk || {}).status).filter(Boolean))];
+  const oneStatus = statuses.length === 1 ? statuses[0] : null;
+  const capC = [T.copy, oneStatus ? `CMYK: ${T.cmykStatus[oneStatus] || oneStatus}.` : null, noPantone ? T.pantoneOpen : null].filter(Boolean).join(" ");
   chunk(sorted, 10).forEach((grp, gi) => {
     const kids = [head(code, "colour", gi === 0 ? (sec.colour || T.topics.colour) : `${T.palette}, ${T.more}`)];
     const rowsOf = [grp.slice(0, 5), grp.slice(5)].filter((r) => r.length);
@@ -608,15 +690,15 @@ S.colour = (code) => {
       const [r, g, b2] = rgbOf(c.hex), cm = c.cmyk || {}, pt = c.pantone || {};
       const vals = [["HEX", c.hex.toUpperCase()], ["RGB", `${r} ${g} ${b2}`]];
       if (cm.value) vals.push([`CMYK ${cm.profile || "?"}`, cm.value.join(" ")]);
-      vals.push([T.pantone, [pt.c ? `${pt.c} C` : null, pt.u ? `${pt.u} U` : null].filter(Boolean).join(" / ") || T.toDecide]);
+      if (!noPantone) vals.push([T.pantone, [pt.c ? `${pt.c} C` : null, pt.u ? `${pt.u} U` : null].filter(Boolean).join(" / ") || T.toDecide]);
       kids.push(tile(M + i * (w + G), TOP + ri * (rh + G), w, rh, [
         at(28, 26, [h("p", { class: "disp", style: { fontSize: "34px", lineHeight: 1 } }, c.name), h("p", { class: "small soft", style: { marginTop: "6px" } }, `${T.roles[c.role] || c.role}${c.share ? `, ${c.share}%` : ""}`)]),
         h("div", { class: "abs", style: { left: "28px", right: "28px", bottom: "22px" } },
           h("div", { class: "vals" }, vals.map(([k, v]) => v === T.toDecide ? h("div", {}, h("span", { class: "kk" }, k), h("span", {}, v)) : h("button", { type: "button", onclick: () => copy(v), title: v }, h("span", { class: "kk" }, k), h("span", { class: "v" }, v)))),
-          cm.status && rh > 360 ? h("p", { class: "soft", style: { font: "400 12.5px/1.3 var(--text)", marginTop: "8px" } }, T.cmykStatus[cm.status] || cm.status) : null)
+          cm.status && !oneStatus && rh > 360 ? h("p", { class: "soft", style: { font: "400 12.5px/1.3 var(--text)", marginTop: "8px" } }, T.cmykStatus[cm.status] || cm.status) : null)
       ], { bg: c.hex, text: true }));
     }));
-    out.push(frame(kids, { cap: T.copy }));
+    out.push(frame(kids, { cap: capC }));
   });
   const textC = colours.filter((c) => ["text", "secondary-text", "accent", "background"].includes(c.role)).slice(0, 6);
   const bgC = colours.filter((c) => ["background", "text", "accent", "support"].includes(c.role)).slice(0, 7);
@@ -738,21 +820,40 @@ S.files = (code) => {
   });
 };
 
-/* Decisions fill a slide by their estimated height, not by a fixed count: short ones fit ten to a slide. */
+/* Open decisions are a handover list: the book shows six, the ones that block use first, and counts the rest. */
 S.decisions = (code) => {
-  const lines = (t, chars) => Math.max(1, Math.ceil(String(t || "").length / chars));
-  const rowH = (x) => 20 + 23 * Math.max(lines(x.what, 30), lines(x.who, 22), lines(x.recommendation, 118));
-  const groups = [[]];
-  let used = 0;
-  for (const x of B.decisions || []) {
-    const hh = rowH(x);
-    if (used + hh > CH2 - 120 && groups[groups.length - 1].length) { groups.push([]); used = 0; }
-    groups[groups.length - 1].push(x);
-    used += hh;
-  }
-  return groups.map((grp, gi) => frame([head(code, "decisions", gi === 0 ? (sec.decisions || T.topics.decisions) : `${T.topics.decisions}, ${T.more}`),
-    tile(M, TOP, CW, CH2, inside(h("table", { class: "tb" }, h("thead", {}, h("tr", {}, h("th", {}, T.decWhat), h("th", {}, T.decWho), h("th", {}, T.decBy), h("th", {}, T.decRec))),
-      h("tbody", {}, grp.map((x) => h("tr", {}, h("td", { style: { width: "320px" } }, x.what), h("td", { style: { width: "240px" } }, x.who || "?"), h("td", { style: { width: "130px" } }, x.by || "?"), h("td", {}, x.recommendation || ""))))), { top: "30px" }), { bg: "var(--panel)", text: true })], { cap: T.topics.decisions }));
+  const all = (B.decisions || []).map((x, i) => [x, i]).sort((a, b) => (b[0].blocks ? 1 : 0) - (a[0].blocks ? 1 : 0) || a[1] - b[1]).map(([x]) => x);
+  const shown = all.slice(0, 6), rest = all.length - shown.length;
+  if (!shown.length) return [];
+  return [frame([head(code, "decisions", sec.decisions || T.topics.decisions),
+    tile(M, TOP, CW, CH2, inside([h("table", { class: "tb" }, h("thead", {}, h("tr", {}, h("th", {}, T.decWhat), h("th", {}, T.decWho), h("th", {}, T.decBy), h("th", {}, T.decRec))),
+      h("tbody", {}, shown.map((x) => h("tr", {}, h("td", { style: { width: "320px" } }, x.what), h("td", { style: { width: "240px" } }, x.who || "?"), h("td", { style: { width: "130px" } }, x.by || "?"), h("td", {}, x.recommendation || ""))))),
+      rest > 0 ? h("p", { class: "small", style: { marginTop: "18px", color: "var(--ink-2)" } }, T.moreDecisions(rest)) : null], { top: "30px" }), { bg: "var(--panel)", text: true })], { cap: T.topics.decisions })];
+};
+
+/* The quick reference: what someone needs on the first day, right after the cover. */
+S.start = () => {
+  const kids = [at(M + 4, 46, h("span", { class: "cap" }, T.start)), at(M, 70, h("div", { class: "h-slide", style: { width: "1640px" } }, sec.start || T.quickTitle))];
+  const r1 = 400, aw = 560, bw = 700, cw = CW - aw - bw - 2 * G;
+  const core = [bg, ink, accent, ink2].filter((c, i, arr) => c && arr.indexOf(c) === i).slice(0, 4);
+  kids.push(tile(M, TOP, aw, r1, [h("div", { class: "abs", style: { inset: "0 0 70px 0", display: "grid", placeItems: "center" } }, logoImg(featureLogo, 300)),
+    primary ? h("p", { class: "abs small", style: { left: "36px", right: "36px", bottom: "26px" } }, `${T.quickLogo}: `, h("a", { href: asset(primary.file) }, primary.file)) : null], { bg: feature.hex, text: true }));
+  kids.push(tile(M + aw + G, TOP, bw, r1, inside([h("p", { class: "cap" }, T.quickColours), h("div", { style: { display: "grid", gridTemplateColumns: `repeat(${core.length}, 1fr)`, gap: "14px", marginTop: "16px" } },
+    core.map((c) => h("div", {}, h("div", { style: { height: "150px", borderRadius: "12px", background: c.hex, boxShadow: edge(c.hex) || "inset 0 0 0 1px rgba(0,0,0,.06)" } }),
+      h("p", { class: "body", style: { marginTop: "10px", fontWeight: 500 } }, c.name), h("button", { type: "button", class: "small", style: { all: "unset", cursor: "pointer", fontVariantNumeric: "tabular-nums" }, onclick: () => copy(c.hex.toUpperCase()) }, c.hex.toUpperCase()))))], { top: "28px" }), { bg: "var(--panel)", text: true }));
+  const fs = (B.type && B.type.families) || [];
+  kids.push(tile(M + aw + bw + 2 * G, TOP, cw, r1, inside([h("p", { class: "cap" }, T.quickType), fs.slice(0, 2).map((f) => h("div", { style: { marginTop: "14px" } },
+    h("p", { style: { fontFamily: `"${f.family}", var(--text)`, fontSize: "38px", lineHeight: 1.05 } }, f.name || f.family), h("p", { class: "small", style: { marginTop: "4px", color: "var(--ink-2)" } }, `${T.famRoles[f.role] || f.role}${f.office_substitute ? `. ${T.subShort}: ${f.office_substitute}` : ""}`)))], { top: "28px" }), { bg: "var(--panel)", text: true }));
+  const rules = ((B.quickref || {}).rules || []).length ? B.quickref.rules : ["logo", "colour", "type", "voice", "imagery"].map((k) => sec[k]).filter(Boolean);
+  const y2 = TOP + r1 + G, h2 = CH2 - r1 - G, lw = 1180;
+  kids.push(tile(M, y2, lw, h2, inside([h("p", { class: "cap" }, T.quickRules), h("ol", { class: "n2", style: { marginTop: "14px", font: "400 24px/1.3 var(--display)" } }, rules.slice(0, 5).map((r) => h("li", { style: { marginBottom: "14px" } }, r)))], { top: "28px" }), { bg: mix((PAL[1] || feature).hex, 30), fg: "var(--ink)", text: true }));
+  const co = M0.company || {};
+  kids.push(tile(M + lw + G, y2, CW - lw - G, h2, inside([capOn(T.quickAsk),
+    h("p", { class: "body", style: { marginTop: "8px" } }, [M0.owner, M0.contact].filter(Boolean).join(", ")),
+    M0.home ? h("p", { class: "small", style: { marginTop: "8px" } }, `${T.home}: `, /^https?:/.test(M0.home) ? h("a", { href: M0.home }, M0.home) : M0.home) : null,
+    co.name || co.tax_id ? [h("p", { class: "cap", style: { color: "inherit", opacity: 0.7, marginTop: "18px" } }, T.company), h("p", { class: "small", style: { marginTop: "6px" } }, [co.name, co.tax_id, co.address, co.register].filter(Boolean).join(", "))] : null,
+    h("p", { class: "small soft", style: { marginTop: "18px" } }, `Brandbook ${M0.version}, ${M0.date}`)], { top: "28px" }), { bg: feature.hex, text: true }));
+  return [frame(kids, { cap: T.start })];
 };
 
 /* ---------- the deck ---------- */
@@ -768,10 +869,13 @@ main.append(frame([
       : h("div", { class: "abs", style: { right: "44px", bottom: "44px", display: "flex", gap: "12px" } }, PAL.filter((c) => c !== feature).slice(0, 6).map((c) => h("div", { style: { width: "104px", height: "104px", borderRadius: "14px", background: c.hex, boxShadow: contrast(c.hex, feature.hex) < 1.3 ? "inset 0 0 0 1.5px rgba(255,255,255,.4)" : null } })))
   ], hero ? { img: hero.file, alt: hero.alt, generated: hero.generated, figure: true, pos: hero.pos } : { bg: feature.hex }),
   at(M - 4, 752, h("p", { class: "h-cover", style: { fontSize: px(tagSize), width: "1840px" } }, tag)),
-  h("p", { class: "abs small", style: { left: px(M), bottom: "44px", color: "var(--ink-2)" } }, `Brandbook ${M0.version}, ${M0.date}, ${M0.status === "approved" ? T.approved : T.draft}${M0.owner ? `. ${T.owner}: ${M0.owner}` : ""}`)
+  h("p", { class: "abs small", style: { left: px(M), bottom: "44px", color: "var(--ink-2)" } }, `Brandbook ${M0.version}, ${M0.date}, ${M0.status === "approved" ? T.approved : T.draft}${M0.owner ? `. ${T.owner}: ${M0.owner}` : ""}${M0.made_by ? `. ${T.madeBy}: ${M0.made_by}` : ""}`)
 ], { id: "top", frameCls: "cover" }));
 
 const tocItems = [];
+/* The quick reference stands outside the two parts, right after the cover; the deck ends with the last rule, not a decorative slide. */
+main.append(h("section", { class: "s", id: "start", "data-readers": READERS.start.join(" "), "aria-label": T.topics.start }, S.start()));
+tocItems.push({ id: "start", code: "0", part: 0, title: T.topics.start });
 const ORDER = [{ part: 1, items: ["strategy", "voice", "applications", "imagery"] }, { part: 2, items: ["logo", "colour", "type", "labels", "print", "files", "decisions"] }];
 const has = { strategy: !!B.strategy, voice: !!B.voice, applications: (B.labels || []).length > 0 || (B.applications || []).length > 0, imagery: !!B.imagery, logo: !!(B.logo && primary), colour: colours.length > 0, type: !!B.type, labels: (B.labels || []).length > 0, print: !!B.print, files: (B.files || []).length > 0, decisions: true };
 for (const part of ORDER) {
@@ -793,10 +897,6 @@ for (const part of ORDER) {
     tocItems.push({ id, code: `${part.part}.${n}`, part: part.part, title: T.topics[id] });
   });
 }
-main.append(frame([tile(M, M, CW, CH, [
-  h("p", { class: "abs disp", style: { left: "70px", top: "64px", width: "1500px", fontSize: tag.length > 34 ? "110px" : "200px", lineHeight: 0.92 } }, tag),
-  h("div", { class: "abs", style: { right: "80px", bottom: "70px" } }, logoImg(featureLogo, 260)),
-  h("p", { class: "abs small", style: { left: "76px", bottom: "70px", opacity: 0.75 } }, T.colophon(B))], { bg: feature.hex })], { frameCls: "closing" }));
 document.querySelectorAll(".pno").forEach((p, i) => (p.textContent = i + 1));
 
 /* ---------- viewer ---------- */
@@ -817,7 +917,8 @@ document.getElementById("menu-label").textContent = T.menu;
 document.getElementById("skip").textContent = T.skip;
 let lastPart = 0;
 for (const it of tocItems) {
-  if (it.part !== lastPart) { toc.append(h("p", {}, it.part === 1 ? T.part1 : T.part2)); lastPart = it.part; }
+  if (it.part !== lastPart && it.part) toc.append(h("p", {}, it.part === 1 ? T.part1 : T.part2));
+  lastPart = it.part;
   toc.append(h("a", { href: `#${it.id}`, "data-for": it.id }, h("span", { class: "n" }, it.code), h("span", { class: "t2" }, it.title)));
   menuLinks.append(h("a", { href: `#${it.id}`, "data-for": it.id, onclick: () => (document.getElementById("menu").open = false) }, `${it.code} ${it.title}`));
 }

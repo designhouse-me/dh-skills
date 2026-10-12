@@ -7,12 +7,19 @@
     "date": "2026-10-06",
     "owner": "Anna Przykładowa, właścicielka",
     "contact": "anna@palarnia-odra.example",
+    "home": "Dysk Google: Palarnia Odra / Marka",
+    "company": {
+      "name": "Palarnia Odra Anna Przykładowa",
+      "tax_id": "NIP 000-000-00-00",
+      "address": "ul. Nadbrzeżna 1, 00-000 Przykładowo"
+    },
     "label_approver": "(do wskazania)",
     "made_by": "Design House",
     "status": "draft"
   },
   "sections": {
     "strategy": "Sprzedajemy kawę, którą palimy we wtorek i wysyłamy w środę.",
+    "positioning": "Porównujemy się z kawą bez daty, nie z innymi palarniami.",
     "voice": "Mówimy jak palacz przy piecu: konkretnie, z datą i z liczbą.",
     "applications": "Każdy materiał zaczyna się od daty palenia, nie od przymiotnika.",
     "logo": "Logo zawsze ma wokół siebie jedno x wolnego miejsca.",
@@ -24,6 +31,15 @@
     "files": "Logo bierzesz z paczki plików, nigdy nie przerysowujesz.",
     "decisions": "Trzy rzeczy czekają na decyzję i każda ma osobę oraz termin."
   },
+  "quickref": {
+    "rules": [
+      "Data palenia na paczce, w poście i w mailu.",
+      "Logo bierzesz z paczki plików, nigdy ze zrzutu ekranu.",
+      "Rzeka i papier niosą markę, rdza raz na stronie.",
+      "Piszemy datą i liczbą, nie przymiotnikiem.",
+      "Na zdjęciach prawdziwy piec i ludzie, którzy palą kawę."
+    ]
+  },
   "strategy": {
     "purpose": "Świeżo palona kawa z jednego pieca nad Odrą, wysyłana dzień po paleniu.",
     "tagline": "Palone we wtorek.",
@@ -34,10 +50,40 @@
     },
     "audience": "Ludzie, którzy parzą kawę w domu i chcą wiedzieć, kiedy i skąd jest.",
     "instead_of": "Zamiast kawy z marketu bez daty palenia i kawiarnianych sieciówek.",
+    "alternatives": [
+      {
+        "alternative": "Kawa z marketu",
+        "problem": "Nie wiadomo, kiedy ją palono; zwykle kilka miesięcy temu.",
+        "we": "Data palenia na paczce, wysyłka dzień po paleniu."
+      },
+      {
+        "alternative": "Kawa z sieciówki na wynos",
+        "problem": "Smak taki sam w każdym mieście, ziarno bez pochodzenia.",
+        "we": "Jedna farma na paczkę, z nazwą i rokiem zbioru."
+      },
+      {
+        "alternative": "Duże palarnie online",
+        "problem": "Paczka czeka w magazynie tydzień albo dwa.",
+        "we": "Palimy pod zamówienia z poniedziałku i wtorku."
+      }
+    ],
+    "category": "Świeżo palona kawa ziarnista na prezent i do domu.",
     "proof": [
-      "Data palenia na każdej paczce",
-      "Jeden piec, palenie we wtorki",
-      "Wysyłka w 24 godziny"
+      {
+        "fact": "Data palenia na każdej paczce",
+        "source": "etykiety partii 2026",
+        "date": "2026-10-06"
+      },
+      {
+        "fact": "Jeden piec, palenie w poniedziałki i wtorki",
+        "source": "harmonogram palarni",
+        "date": "2026-10-06"
+      },
+      {
+        "fact": "Wysyłka w 24 godziny od palenia",
+        "source": "zamówienia z września 2026",
+        "date": "2026-09-30"
+      }
     ],
     "values": [
       {
@@ -55,8 +101,8 @@
     ],
     "signature": "Pieczątka z datą palenia, która stoi na paczce, w poście i w stopce maila.",
     "rejected": [
-      "Brązowa paleta z ziarnem kawy w logo: zamiast tego chłodna rzeka i papier.",
-      "Kremowe tło z szeryfem i terakotą: zamiast tego szary papier i kanciasty szablon."
+      "Brązowa paleta z ziarnem kawy w logo, jak w każdej kawiarni: zamiast tego chłodna rzeka i papier.",
+      "Kremowe tło z ozdobnym szeryfem jak w sieciówkach: zamiast tego szary papier i kanciasty szablon."
     ]
   },
   "voice": {
@@ -102,6 +148,43 @@
         "before": "Kawa najwyższej jakości z pasją.",
         "after": "Kawa palona we wtorek, u Ciebie w czwartek."
       }
+    ],
+    "situations": [
+      {
+        "moment": "Nowa partia w sklepie",
+        "example": "Palona 7 października. Etiopia, Guji. Morela i jaśmin.",
+        "avoid": "Wyjątkowa kawa o niezapomnianym smaku."
+      },
+      {
+        "moment": "Pytanie o termin wysyłki",
+        "example": "Palimy we wtorek, paczka wyjdzie w środę rano.",
+        "avoid": "Wyślemy najszybciej, jak to możliwe."
+      },
+      {
+        "moment": "Reklamacja",
+        "example": "Przepraszamy. Nowa paczka wyjdzie jutro rano, starej nie odsyłaj.",
+        "avoid": "Ups, coś poszło nie tak!"
+      },
+      {
+        "moment": "Zła opinia w sieci",
+        "example": "Dziękujemy za uwagę o mieleniu. Od tej partii mielimy grubiej pod dripa. Napisz na anna@palarnia-odra.example.",
+        "avoid": "Przykro nam, że nie smakowało, inni klienci są zadowoleni."
+      }
+    ],
+    "boilerplate": {
+      "line": "Palarnia Odra pali kawę w jednym piecu nad Odrą i wysyła ją dzień po paleniu, z datą na każdej paczce.",
+      "short": "Palarnia Odra to jeden piec nad Odrą i małe partie palone w poniedziałki i wtorki. Każda paczka ma datę palenia i nazwę farmy, z której pochodzi ziarno. Kawę wysyłamy w ciągu doby od palenia, więc do domu trafia świeża, a nie po kilku miesiącach w magazynie."
+    },
+    "fixed_lines": [
+      {
+        "text": "Palona: [data palenia]",
+        "where": "front każdej paczki, opis produktu w sklepie, każdy post z nową partią"
+      }
+    ],
+    "editorial": [
+      "Daty słownie z miesiącem: 7 października, nie 07.10.",
+      "Cudzysłowy „…”, myślnik jako półpauza ze spacjami.",
+      "Gramatura ze spacją: 250 g."
     ],
     "name_rule": "Odra zawsze wielką literą na początku, nigdy wersalikami w tekście.",
     "claims": []
@@ -335,12 +418,12 @@
     "sample": "Zażółć gęślą jaźń. Palona 7 października."
   },
   "imagery": {
-    "light": "Dzienne światło z okna palarni, bez lamp błyskowych.",
-    "composition": "Ręce i narzędzia w kadrze, produkt nigdy sam na białym tle.",
-    "casting": "Ludzie, którzy naprawdę palą i pakują kawę, w roboczych ubraniach.",
-    "props": "Piec, worki jutowe, waga, nic z kawiarni.",
-    "styling": "Fartuchy i robocze koszule, bez stylizacji sesyjnej.",
-    "grading": "Chłodne cienie, ciepłe światło na rękach, bez filtrów.",
+    "light": "Dzienne światło z okna, bez lamp błyskowych.",
+    "composition": "Ręce i narzędzia w kadrze.",
+    "casting": "Ludzie, którzy naprawdę palą kawę.",
+    "props": "Piec, worki jutowe, waga.",
+    "styling": "Fartuchy i robocze koszule.",
+    "grading": "Chłodne cienie, bez filtrów.",
     "do": [
       "Data palenia widoczna w kadrze, gdy to możliwe."
     ],
@@ -478,7 +561,8 @@
       "what": "Pantone dla rzeki i rdzy",
       "who": "Anna Przykładowa z drukarnią",
       "by": "2026-10-20",
-      "recommendation": "Dobrać na wzorniku przy pierwszym druku etykiet."
+      "recommendation": "Dobrać na wzorniku przy pierwszym druku etykiet.",
+      "blocks": true
     },
     {
       "what": "Papier etykiety",

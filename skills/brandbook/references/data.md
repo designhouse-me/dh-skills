@@ -22,15 +22,29 @@ Read when you fill or change `brand.json`. Start from `assets/brand.example.json
 - `meta.cover_colour` (optional): the colour id for the dark feature tiles, the "Rules" divider and the closing slide; by default the accent when text on it reads, otherwise the text colour.
 - `meta.radius` (optional): the tile corner radius in px on a 1920 × 1080 slide; 20 by default, 0 for a hard-edged brand.
 - `meta.label_approver`: the person who approves labels before print (the regulatory role); `"(do wskazania)"` until someone is named. The book prints it under every label.
-- `sections`: one headline per section, written as the rule the reader should remember. Keys: `strategy`, `voice`, `applications`, `logo`, `colour`, `type`, `imagery`, `labels`, `print`, `files`, `decisions`. A missing key falls back to the topic name, and `check_brand.py` warns.
+- `meta.home`: where the current version of the book and the files lives (a link or a shared folder), shown on the quick reference. The most common reason a brand book goes unused is that nobody can find it; without `home`, `check_brand.py` warns.
+- `meta.company` (optional): the data that goes on offers, letters and the e-mail footer: `name` (the registered name), `tax_id` (NIP), `address`, `register` (KRS and court, share capital: only for a company that has them; a sole trader shows the NIP and the address). A missing value is a placeholder listed in `01-verify.md`, never a guess.
+- `sections`: one headline per section, written as the rule the reader should remember. Keys: `strategy`, `positioning`, `voice`, `applications`, `logo`, `colour`, `type`, `imagery`, `labels`, `print`, `files`, `decisions`. A missing key falls back to the topic name, and `check_brand.py` warns.
+- `quickref.rules`: up to five rules someone needs on their first day, written as instructions ("Take the logo from the files, never from a screenshot"). The quick reference slide comes right after the cover with the logo, the core colours, the typeface and its substitute, these rules, the contact and `meta.home`. Without `rules` it falls back to the section headlines.
 
 ## 2. strategy and voice
 
-- `strategy.tagline`: the brand's line, short (best under 35 characters); it is the cover and the closing slide. Without it the cover shows the name.
-- `strategy.purpose`: one or two sentences, why the brand exists; the intro slide leads with it.
+The text people copy is in this section, so every field is a rule or a sentence someone can use, not a description of the brand. Three tests before a sentence goes in: could a competitor say it with their name in it; does it rule anything out; is there a fact behind it. A sentence that fails all three goes. Keep every item to one line (about 12 words); the book is read, not studied.
+
+- `strategy.tagline`: the brand's line, short (best under 35 characters); it is the cover and the quick reference. Without it the cover shows the name.
+- `strategy.purpose`: one or two sentences, why the brand exists, said as what it does for whom; the intro slide leads with it.
 - `strategy.story` (optional): two or three sentences under the purpose. `strategy.fact` (optional): `{value, label}`, one big true number or fact from the brief ("od 2019", "4 sezony").
-- `audience`, `instead_of` (what the customer would use otherwise), `proof` (facts from the brief only), `values` (`value` + `behaviour`: what people do, not an adjective), `decision_rules` (2–3 for cases the book doesn't cover), `signature` (the one element that belongs only to this brand), `rejected` (default looks you rejected and what instead).
+- `audience`: who gets the most from the brand, in their situation ("owners of small firms who need a machine, including those turned down by a bank"), not "everyone who…".
+- `instead_of`: what the customer would do without the brand, in one or two sentences. `alternatives[]` (optional) is the same as a comparison, which positioning starts from: `alternative` (what the customer does instead: a bank, a dealer's finance, doing it themselves, nothing), `problem` (what goes wrong there), `we` (what the brand does about it). With `alternatives` or dated `proof` the book adds a positioning slide; `sections.positioning` is its headline.
+- `category` (optional): the frame in which the customer compares the brand ("a leasing broker for small firms"), one phrase.
+- `proof[]`: facts from the brief and the client's data only, each `{fact, source, date}` (a brand's own template may add `value`, the big number, and `top`, the question above it, and show proof as stat cards; `fact` is then the card's label under the number, so it reads as a fact only next to `value`, and such data needs that template, not the default one's proof list); a plain string still works, but `check_brand.py` warns that a number without a source and a date can't be checked or refreshed. Ratings, counts and records go stale: the date is part of the fact.
+- `values` (`value` + `behaviour`: what people do, not an adjective), `decision_rules` (2–3 for cases the book doesn't cover), `signature` (the one element that belongs only to this brand).
+- `rejected`: looks and habits the brand avoids, each written as a don't for whoever makes materials, with the reason in the brand ("Navy and gold like a bank: we are not a bank"). The client reads this list: the reasoning against model defaults (cream with terracotta, near-black with an acid accent) stays in `02-system.md`.
 - `voice.traits`: pairs `is` / `is_not` ("plainly", "not dryly"). `tone`: per channel, `how` and a real `example`. `words_use`, `words_avoid`, `before_after`, `name_rule`.
+- `voice.situations[]`: the moments where tone matters most, 3–6 from the brand's real work (an enquiry, a quote, waiting for a decision, a refusal, a bad review): `moment`, `example` (a line as the brand writes it), `avoid` (the line it doesn't write), optional `rule` only when the example doesn't show it. The pair of lines teaches more than a rule. The book shows them with `before_after` on the "In practice" slide.
+- `voice.boilerplate`: the description people paste into a profile, a listing, an offer or a press note: `line` (one sentence, up to about 25 words) and `short` (about 50 words). Facts from `proof`, no adjectives a competitor could use.
+- `voice.fixed_lines[]` (optional): lines that always appear in a given place, `text` and `where` ("We are an intermediary, not a bank": every ad that names terms). When the line may be a legal duty, the rule says where it goes and `01-verify.md` asks who confirms the duty; the book never states the law.
+- `voice.editorial[]` (optional): up to three house-style rules, one line each: quotation marks, dashes, numbers, currency, dates, non-breaking spaces (in Polish „…”, a spaced en dash, `15–30%`, `1 200 zł`, a non-breaking space after one-letter words).
 - `voice.claims`: health or nutrition claims the brand may use, each with `register_ref` (the EU register entry). Without one, `check_brand.py` errors. Leave it empty rather than invent.
 
 ## 3. logo
@@ -39,6 +53,7 @@ Read when you fill or change `brand.json`. Start from `assets/brand.example.json
 - `clear_space`: `defined_as` (a part of the mark: "the height of the letter O") and `ratio` (its share of the logo height, used to draw the diagram). Never mm or px.
 - `dont[]`: `rule` (a short imperative) and optional `demo`: `stretch`, `squeeze`, `rotate`, `shadow`, `recolor`, `busy` or `on-accent` (the primary logo on the accent colour, for a logo whose own colour disappears there), drawn on the primary logo. The book shows the first four.
 - `finish` (optional): `type` (`foil`, `emboss`, `none`), `min_line_mm`, `min_mm`.
+- `partners` (optional, when the brand shows other companies' logos: lenders, suppliers, sponsors): `rule` (how the logos stand next to the brand's: where, how large, in which colour; the sender leads and the identities never blend) and `dont[]`. Whether the brand may use those logos at all is a question for `01-verify.md`, with who confirms it.
 
 ## 4. colours and pairs
 
@@ -74,9 +89,9 @@ Read when you fill or change `brand.json`. Start from `assets/brand.example.json
 
 - `print`: `printer` (null until chosen), `technology`, `pdf`, `profile`, `bleed_mm`, `safe_mm`, `small_text`, `finishes[]` (`type`, `colour`, `layer`), `proof`.
 - `files[]`: `path` (a file or a folder), `what`, `print_ready` (true only for files a printer can use as they are; leave it out for files where the question doesn't apply). Built and rendered files (`book/`, `labels/`, `out/`, `tokens.css`) only warn until they exist.
-- `decisions[]`: `what`, `who`, `by` (date), `recommendation`. Every open question gets your recommendation, so the client confirms or overrides instead of starting from nothing.
+- `decisions[]`: `what`, `who`, `by` (date), `recommendation`, optional `blocks: true` for a decision that stops someone using the book (no print logo, no printer). Every open question gets your recommendation, so the client confirms or overrides instead of starting from nothing. The book shows six, the blocking ones first, and says how many more are on the handover list; the full list lives in `01-verify.md`. Recommendations are written for the client: no field names, file paths or tools.
 - `references[]`: `name`, `layer` (`structure`, `presentation`, `photography`), `borrow`, `not`. Internal: never shown in the book.
-- `changelog[]`: `version`, `date`, `change`.
+- `changelog[]`: `version`, `date`, `change`, written as what changed for the reader ("real photos instead of visualisations"), not who asked for it.
 
 ## 9. A brand's own template
 
@@ -87,7 +102,8 @@ The template keeps:
 - the placeholders `/*__FONT_FACES__*/` and `/*__BRAND_DATA__*/` (the build refuses a template without them);
 - `<script id="brand-data">`, `<main id="main">` and `window.__bookReady` (resolves after fonts and images);
 - every slide as `.frame > .slide` at 1920 × 1080, the cover as `main > .frame.cover#top`, each topic as `main > section.s[id]` with `data-readers`, a `.pno` page number per slide, and print CSS `@page { size: 1920px 1080px }` with `.frame { break-after: page }`;
-- `[data-logo][data-min-px]` on every logo image, `figure[data-generated="true"]` on generated images with the slide's `.foot[data-ai]` naming them, `.t[data-text]` on fixed-size text boxes so `render.mjs check` measures overflow.
+- `[data-logo][data-min-px]` on every logo image, `figure[data-generated="true"]` on generated images with the slide's `.foot[data-ai]` naming them, `.t[data-text]` on fixed-size text boxes so `render.mjs check` measures overflow;
+- the quick reference right after the cover (`section.s#start`), and every strategy and voice field the data has: `purpose`, `audience`, `instead_of` or `alternatives`, `proof`, `quickref.rules`, `voice.situations`, `voice.boilerplate`, `voice.fixed_lines`, `voice.name_rule`, `meta.company`. `render.mjs check` looks for the start of each in the rendered text and errors on a field the template drops; a custom template that lost the audience is how a book ends up without saying whom it is for.
 
 Data the default template doesn't read (a comparison, case cards, an illustration set) goes into `brand.json` under the section it belongs to, so the one-source rule still holds; `check_brand.py` ignores keys it doesn't know. Keep `imagery.images` listing every photograph the custom template shows (with `generated` and a caption), even when the template reads its own list such as `imagery.cases`: the checks and the AI captions work from `imagery.images`, so the two lists name the same files and change together. Copy values from the site's CSS (colours, radii, sizes, weights), not impressions of it, and record in `02-system.md` that the book follows the site.
 

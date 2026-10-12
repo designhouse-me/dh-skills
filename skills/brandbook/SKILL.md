@@ -4,7 +4,7 @@ description: Builds a brand book from a brief, logo files and product data, deli
 license: CC-BY-4.0
 metadata:
   author: Design House
-  version: "1.1"
+  version: "1.2"
 ---
 
 # Brand book
@@ -13,7 +13,10 @@ Goal: a brand book that the person who uses it after the designer has left can w
 
 ## Rules that always apply
 
-- **Write for the user, not the designer.** The reader is a marketing coordinator, a printer or an agency hired in two years. Every page answers one question for a named reader; a page that answers none goes. Headlines are rules ("The variant changes the colour, not the layout"), not topics; the number of the section stays only for finding it.
+- **Write for the user, not the designer.** The reader is a marketing coordinator, a printer, the owner writing a post or an agency hired in two years. Every page answers one question for a named reader; a page that answers none goes. Headlines are rules ("The variant changes the colour, not the layout"), not topics; the number of the section stays only for finding it. A sentence earns its place when a competitor couldn't sign it, when it rules something out, or when a fact stands behind it; one that does none of these is filler.
+- **Few words, one rule per slide.** People read a quarter of the words on a page. A slide carries one rule and at most about 90 words of prose (tables of values, mockups and photos don't count); a small brand's whole book reads in about 1,500 words. Show the rule with an example instead of explaining it, one line per item, no second sentence that repeats the first. In one project the first pass at the text reached 3,300 words and the owner asked who would read it; the cut kept every rule and lost half the words. `render.mjs check` counts the prose on every slide.
+- **The book speaks for the brand; the process stays out.** No field names, file paths of the build, tool names, the agency's reasoning or who asked for a change in anything the client reads: in one project the book said `name_confirmed: true`, "the prompt is in docs/archive" and "on Design House's request". `check_brand.py` and `render.mjs check` flag them. The agency signs the cover, nowhere else.
+- **The quick reference comes first.** Right after the cover: the logo, the core colours, the typeface and its substitute, five rules, the contact and where the current version lives (`meta.home`). People use templates and yes-or-no answers; findability is where brand books fail most often.
 - **One source, two parts.** The story and the rules are built from the same data, never written twice. In a 2026 project the presentation and the technical manual were two hand-written PDFs; they drifted, and the shorter one lost a mandatory label item. Change `brand.json` and rebuild: `build_book.py` refuses to overwrite a file edited by hand.
 - **Direction before pages.** One stop for the user: directions, a recommendation, the page budget. In the same project five directions were built in one day, because every new reference restarted the book.
 - **A reference gives one layer, never assets.** The structure, the way of presenting or the photo style; write what you borrow and what not in `references[]`. Never copy its colours, type or copy, and never name it in anything the client sees (the build leaves `references` out; `check_brand.py` errors on a leak).
@@ -36,11 +39,11 @@ Copy the client's files into `brand/input/` and working copies under readable na
 
 ### 2. Direction (the one stop)
 
-Read `references/canon.md`. Write the reader matrix (page, question, reader), three default looks you reject, then 2–3 directions: palette with roles, typeface pair with a reason, the signature element, how the label system varies. Recommend one and propose the page budget: one slide per PDF page, about 18 for a brand with one label (cover, part 1, the "Rules" divider, part 2, closing), plus one per further label, one per variant world and one overview, one per ten more colours; the web book shows the same slides. List the image slots with their source (the client, generated, missing): a landscape cover, a portrait intro, a scene and a detail per world, a photo per product, a billboard. Show the user the directions, your recommendation, the budget, the image plan and the spelling question, and wait. With "no questions" or nobody at the keyboard, choose and record the assumptions.
+Read `references/canon.md`. Say which scope you are building (a logo manual, a visual identity system or a brand book; in Polish "brandbook" can mean any of them, so name it as a list of pages). Write the reader matrix (page, question, reader), three default looks you reject, then 2–3 directions: palette with roles, typeface pair with a reason, the signature element, how the label system varies. Recommend one and propose the page budget: one slide per PDF page, about 18 for a brand with one label (cover, quick reference, part 1, the "Rules" divider, part 2), plus one per further label, one for positioning when there are alternatives, one per variant world and one overview, one per ten more colours; the web book shows the same slides. Length is not what goes wrong in a brand book; a page nobody needs is. List the image slots with their source (the client, generated, missing): a landscape cover, a portrait intro, a scene and a detail per world, a photo per product, a billboard. Show the user the directions, your recommendation, the budget, the image plan and the spelling question, and wait. With "no questions" or nobody at the keyboard, choose and record the assumptions.
 
 ### 3. System
 
-Fill `brand.json` field by field with `references/data.md`, starting from `assets/brand.example.json` (a fictional brand). Colours and print with `references/print.md`, labels with `references/labels-eu.md`, photography and AI with `references/images.md`. Write `02-system.md`.
+Fill `brand.json` field by field with `references/data.md`, starting from `assets/brand.example.json` (a fictional brand). The text first: positioning from the alternatives the customer really has, proof with sources and dates, the situations the brand writes in most, the description in one sentence and in fifty words; copy the client's own words and numbers, not adjectives. Colours and print with `references/print.md`, labels with `references/labels-eu.md`, photography and AI with `references/images.md`. Write `02-system.md`.
 
 ```bash
 SK=<this skill's folder>
@@ -75,6 +78,7 @@ Look at every section at 1440 px and at the PDF's slides side by side (the deck 
 ```md
 - [ ] direction chosen at the stop (or assumptions recorded); page budget kept
 - [ ] check_brand.py and render.mjs check without errors; every warning fixed or explained
+- [ ] the quick reference after the cover; every strategy and voice field visible in the book; no field names, build paths, tools or agency notes in it
 - [ ] every section viewed at 1440 px, the PDF's slides side by side; label guides viewed
 - [ ] every colour with CMYK profile and status, Pantone or a dated decision
 - [ ] typefaces with reasons, licences and the language's letters
@@ -91,6 +95,7 @@ Look at every section at 1440 px and at the PDF's slides side by side (the deck 
 | "change this colour" | the HEX, CMYK back to `converted` or `proposed`, rebuild, read the contrast matrix again |
 | "make it like this case study" | only the presentation changes (headlines, order of part 1, images); the rules and values stay, the reference stays unnamed |
 | "it's boring" | images first: cover, intro, worlds, product photos, billboard; then `meta.cover_colour` and `strategy.tagline`; the layout stays the template's |
+| "the texts say nothing" / "it's all adjectives" | every sentence of strategy and voice through the three tests (a competitor could sign it, it rules nothing out, no fact behind it); add the situations from the brand's real work, proof with sources and dates, the description in one and fifty words; cut what fails, don't add pages |
 | "it doesn't look like our site" / "it looks generated" | the brand's own template (`meta.template`, `references/data.md` section 9) in the site's system, real photos before generated ones; archive the old PDF, bump the version |
 | "too long" | cut part 1 first, slide by slide: the mood photos (`slot` `other`), the billboard, then the worlds (both parts come from the same data, so they leave the web book too); send a designer the link with `?reader=designer` |
 | "the printer wants the file" | the designer prepares it from the print section; `labels/*.pdf` are templates |
@@ -104,10 +109,11 @@ Look at every section at 1440 px and at the PDF's slides side by side (the deck 
 - **A fallback font without a warning.** `render.mjs check` measures each face with two fallbacks; a missing "ł" shows as an error, not as a slightly different letter.
 - **An example that breaks the book's own norms**, such as the client's current label shown as "the layout", needs the words "layout only" next to it.
 - **A colour used but not defined**: the label text colour, a photo background. Every colour used anywhere is in `colours[]`.
-- **A brand without packaging** (a service, a broker, a studio): `labels` stays empty, and the book drops the label slides and doesn't mention labels on the "Rules" divider. The print section stays, for cards, signage, roll-ups and vehicle graphics; the product-line slot goes to the services, shown as `imagery.worlds`.
+- **A brand without packaging** (a service, a broker, a studio): `labels` stays empty, and the book drops the label slides and doesn't mention labels on the "Rules" divider. What the labels did, the voice does: the situations the business writes in every day (an enquiry, a quote, waiting, a refusal, a bad review), the description in one and fifty words, the lines that must appear (an intermediary's "we are not a bank"), proof with sources and dates, the rule for partners' logos, the company data for offers. The print section stays, for cards, signage, roll-ups and vehicle graphics; the product-line slot goes to the services, shown as `imagery.worlds`. Claims about money, speed or approval are a legal question like a health claim: the book says what the brand may promise and `01-verify.md` asks who confirms it.
+- **A UI kit in a brand book.** Button heights, corner radii in px and variable-font axes belong to the website's code and `tokens.css`; the book keeps the rules a non-designer can follow ("one yellow button per view").
 - **A logo that exists only as a raster** (a PNG from the website): the variants are pixel recolourings and crops of that file, recorded as working copies, never a trace or a redraw; the vector master and a flat print version are decisions with a person and a date.
 
 ## Output
 
-- `brand/`: `brand.json`, `book/index.html` (opens from disk, arrow keys move between slides; `?reader=designer` opens the designer's view), `labels/*.html`, `tokens.css` (the colour and type roles for a website or a video), `out/brandbook.pdf`, `out/labels/`, `out/shots/`, `00-input.md`, `01-verify.md` (internal), `02-system.md`.
+- `brand/`: `brand.json`, `book/index.html` (opens from disk with the quick reference after the cover, arrow keys move between slides; `?reader=designer` opens the designer's view), `labels/*.html`, `tokens.css` (the colour and type roles for a website or a video), `out/brandbook.pdf`, `out/labels/`, `out/shots/`, `00-input.md`, `01-verify.md` (internal), `02-system.md`.
 - In the reply: the chosen direction and why; the palette and typefaces and where they come from; what each reader finds; the placeholders and open decisions with people and dates; what wasn't checked (a printer's proof, the legal review, image generation); the commands to rebuild.
