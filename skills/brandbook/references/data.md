@@ -12,6 +12,7 @@ Read when you fill or change `brand.json`. Start from `assets/brand.example.json
 6. [imagery and applications](#6-imagery-and-applications)
 7. [labels](#7-labels)
 8. [print, files, decisions, references, changelog](#8-print-files-decisions-references-changelog)
+9. [A brand's own template](#9-a-brands-own-template)
 
 ## 1. meta and sections
 
@@ -36,7 +37,7 @@ Read when you fill or change `brand.json`. Start from `assets/brand.example.json
 
 - `variants[]`: `id`, `name`, `file` (SVG from the client, never redrawn), `use`, `min_px` (screen), `min_mm` (print), `on` (colour ids of backgrounds it may sit on). The first variant is the primary. A variant whose id contains `neg`, `white`, `light` or `inverse` is used on dark backgrounds when `on` doesn't decide.
 - `clear_space`: `defined_as` (a part of the mark: "the height of the letter O") and `ratio` (its share of the logo height, used to draw the diagram). Never mm or px.
-- `dont[]`: `rule` (a short imperative) and optional `demo`: `stretch`, `squeeze`, `rotate`, `shadow`, `recolor` or `busy`, drawn on the primary logo.
+- `dont[]`: `rule` (a short imperative) and optional `demo`: `stretch`, `squeeze`, `rotate`, `shadow`, `recolor`, `busy` or `on-accent` (the primary logo on the accent colour, for a logo whose own colour disappears there), drawn on the primary logo. The book shows the first four.
 - `finish` (optional): `type` (`foil`, `emboss`, `none`), `min_line_mm`, `min_mm`.
 
 ## 4. colours and pairs
@@ -47,13 +48,14 @@ Read when you fill or change `brand.json`. Start from `assets/brand.example.json
 
 ## 5. type
 
-- `families[]` (one or two): `family` (the CSS name), `role` (`display`, `text`, `numerals`), `fallback` (the CSS stack after it, e.g. `Georgia, serif` for a serif; default `system-ui, sans-serif`), `files` (paths, or objects `{file, weight, style}` for static weights; a plain path is treated as a variable font 100–900), `weights`, `licence`, `licence_file`, `source`, `why` (one sentence, this brand), `office_substitute` (a font available in Word, Google Docs and Canva), `reflex_reason` (only when the family is on the reflex list).
+- `families[]` (one or two): `family` (the CSS name), optional `name` (what the reader sees on the type slide, when the CSS name is an alias), `role` (`display`, `text`, `numerals`), `fallback` (the CSS stack after it, e.g. `Georgia, serif` for a serif; default `system-ui, sans-serif`), `files` (paths, or objects `{file, weight, style, stretch}` for static weights; a plain path is treated as a variable font 100–900), `weights`, `licence`, `licence_file`, `source`, `why` (one sentence, this brand), `office_substitute` (a font available in Word, Google Docs and Canva), `reflex_reason` (only when the family is on the reflex list). One variable family can give two cuts: a second entry with its own CSS `family` (an alias), the same file, a fixed `weight` ("600") and `stretch` ("108%"), and `name` saying what it is ("Archivo SemiBold 108%"); the browser clamps the axes to these values, so every headline in the book is set in that cut.
 - `scale[]`: `level`, `role`, `px`, `pt`, `line`, `use`.
 - `sample`: a sentence with the language's accented letters, shown in every face.
 
 ## 6. imagery and applications
 
 - `imagery`: `light`, `composition`, `casting`, `props`, `styling`, `grading` (all six, each a rule a photographer can follow), `do[]`, `dont[]`, `ai` (`allowed`, `banned`, `label`, `approver`).
+- `imagery.mood_headline` (optional): the headline of the photo mosaic slide, when its photos say more than the topic name ("Tylko prawdziwe odbiory").
 - `imagery.images[]`: `file`, `alt`, `generated` (the slide footer then says `imagery.ai.label`), `caption` (optional text on the photo), `pos` (CSS object-position), `slot`: `cover` (the cover photo, landscape), `intro` (the intro slide, portrait), anything else goes into the photo mosaic. `imagery.hero_on`: the colour id closest to the part of the cover photo under the logo (top left), so the book picks the variant that reads there: a light id for a bright window or sky, a dark one for shadow. Look at the cover after the build; the book can't measure a photo opened from disk.
 - `imagery.worlds[]` (optional, the strongest slides when the brand has variants): `name`, `colour` (id), `image` (a scene in that colour, landscape), `detail` (a portrait or close-up), `line`, `generated`. One overview slide and one slide per world, up to four.
 - `applications[]`: `id`, `kind` (`post`, `card`, `email`, `web`, `billboard`), `title`, `headline`, `text`, optional `background` (a colour id; a post defaults to the text colour, the rest to the background) and `image` (covers the mockup). A `billboard` needs an `image` and gets a full slide with the headline and the logo: `headline_at` (`top` or `bottom`, where the photo is calm; at the top the logo sits under the headline, at the bottom it takes the top right corner), `text_colour` (a colour id or HEX; white by default) and `logo_on` (the colour id the logo variant should suit). The book draws each one at its real size from the tokens and places the logo at no less than its minimum, so a mockup can't break the book's own rule.
@@ -75,3 +77,17 @@ Read when you fill or change `brand.json`. Start from `assets/brand.example.json
 - `decisions[]`: `what`, `who`, `by` (date), `recommendation`. Every open question gets your recommendation, so the client confirms or overrides instead of starting from nothing.
 - `references[]`: `name`, `layer` (`structure`, `presentation`, `photography`), `borrow`, `not`. Internal: never shown in the book.
 - `changelog[]`: `version`, `date`, `change`.
+
+## 9. A brand's own template
+
+The default deck is a neutral mosaic. When the brand already has a working system (a live site with its own type, grid and components) and the client says the book doesn't look like the brand, the book takes the site's system instead: `meta.template` points to an HTML file next to `brand.json` (e.g. `template/book.html`), built from the default template's contract and the site's CSS, not from the mosaic.
+
+The template keeps:
+
+- the placeholders `/*__FONT_FACES__*/` and `/*__BRAND_DATA__*/` (the build refuses a template without them);
+- `<script id="brand-data">`, `<main id="main">` and `window.__bookReady` (resolves after fonts and images);
+- every slide as `.frame > .slide` at 1920 × 1080, the cover as `main > .frame.cover#top`, each topic as `main > section.s[id]` with `data-readers`, a `.pno` page number per slide, and print CSS `@page { size: 1920px 1080px }` with `.frame { break-after: page }`;
+- `[data-logo][data-min-px]` on every logo image, `figure[data-generated="true"]` on generated images with the slide's `.foot[data-ai]` naming them, `.t[data-text]` on fixed-size text boxes so `render.mjs check` measures overflow.
+
+Data the default template doesn't read (a comparison, case cards, an illustration set) goes into `brand.json` under the section it belongs to, so the one-source rule still holds; `check_brand.py` ignores keys it doesn't know. Keep `imagery.images` listing every photograph the custom template shows (with `generated` and a caption), even when the template reads its own list such as `imagery.cases`: the checks and the AI captions work from `imagery.images`, so the two lists name the same files and change together. Copy values from the site's CSS (colours, radii, sizes, weights), not impressions of it, and record in `02-system.md` that the book follows the site.
+

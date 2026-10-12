@@ -43,9 +43,12 @@ def font_faces(families, prefix):
                 continue
             weight = item.get("weight", "100 900")
             style = item.get("style", "normal")
+            # A width axis value or range ("108%", "75% 125%"): a variable font clamps the used width to it,
+            # so one file can serve a wide headline cut under its own family name.
+            stretch = f' font-stretch: {item["stretch"]};' if item.get("stretch") else ""
             rules.append(
                 f'@font-face {{ font-family: "{fam["family"]}"; src: url("{prefix}{path}") format("{fmt}"); '
-                f"font-weight: {weight}; font-style: {style}; font-display: block; }}"
+                f"font-weight: {weight}; font-style: {style};{stretch} font-display: block; }}"
             )
     return "\n".join(rules)
 
@@ -95,7 +98,16 @@ def main():
         fail("colours are missing; the book takes its look from them")
     families = (brand.get("type") or {}).get("families") or []
 
-    book_tpl = (SKILL / "assets" / "book-template.html").read_text(encoding="utf-8")
+    # A brand whose system already lives on a site can bring its own template (meta.template, relative to
+    # brand.json). It keeps the two placeholders and the render contract in references/data.md, section 9.
+    custom = meta.get("template")
+    book_path = root / custom if custom else SKILL / "assets" / "book-template.html"
+    if not book_path.is_file():
+        fail(f"meta.template: file not found: {book_path}", 2)
+    book_tpl = book_path.read_text(encoding="utf-8")
+    for mark in ("/*__FONT_FACES__*/", "/*__BRAND_DATA__*/"):
+        if mark not in book_tpl:
+            fail(f"{book_path.name} has no {mark} placeholder; the build would ship a book without data or fonts")
     label_tpl = (SKILL / "assets" / "label-template.html").read_text(encoding="utf-8")
 
     outputs = {}

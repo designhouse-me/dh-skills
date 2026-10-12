@@ -210,12 +210,14 @@ const T = {
 }[LANG];
 Object.assign(T, LANG === "pl" ? {
   partWord: "Część", keys: "Strzałki w górę i w dół przechodzą między slajdami.", viz: "Wizualizacja",
-  rulesLead: "Logo, kolor, pismo, zdjęcia, etykiety i druk: zasady dla osób, które projektują i drukują materiały marki.",
+  rulesLead: (list) => `${list}: zasady dla osób, które projektują i drukują materiały marki.`,
+  ruleWords: { logo: "logo", colour: "kolor", type: "pismo", imagery: "zdjęcia", labels: "etykiety", print: "druk" }, and: "i",
   labelSlide: "Etykieta", more: "ciąg dalszy", products: "Linia produktów", templateShort: "Szablon etykiety, nie plik do druku.",
   howWe: "Jak fotografujemy", aiShort: "Obrazy z AI"
 } : {
   partWord: "Part", keys: "The up and down arrow keys move between slides.", viz: "Visualisation",
-  rulesLead: "Logo, colour, type, imagery, labels and print: rules for the people who design and print the brand's materials.",
+  rulesLead: (list) => `${list}: rules for the people who design and print the brand's materials.`,
+  ruleWords: { logo: "logo", colour: "colour", type: "type", imagery: "imagery", labels: "labels", print: "print" }, and: "and",
   labelSlide: "Label", more: "continued", products: "The product line", templateShort: "A label template, not a print file.",
   howWe: "How we photograph", aiShort: "AI images"
 });
@@ -264,7 +266,8 @@ function textOn(hex) {
   return options.reduce((best, c) => (contrast(c, hex) > contrast(best, hex) + 0.5 ? c : best), options[0]);
 }
 const edge = (hex) => (bg && hex && hex.startsWith("#") && contrast(hex, bg.hex) < 1.2 ? "inset 0 0 0 1.5px var(--line)" : null);
-const mix = (hex, pct) => `color-mix(in srgb, ${hex} ${pct}%, var(--bg))`;
+// A tint for a panel that carries ink-coloured text: a dark colour mixed at 30% turns mid-grey and the small grey text on it disappears, so dark colours stay light.
+const mix = (hex, pct) => `color-mix(in srgb, ${hex} ${isDark(hex) ? Math.min(pct, 12) : pct}%, var(--bg))`;
 function logoFor(bgId) {
   const vs = (B.logo && B.logo.variants) || [];
   const c = byId[bgId];
@@ -521,7 +524,7 @@ S.imagery = (code) => {
   const mood = images.filter((i) => !["cover", "intro"].includes(i.slot));
   const chipFor = (i) => (i.caption || (!i.generated && i.alt) ? h("figcaption", { class: "chip" }, i.caption || i.alt) : null);
   if (mood.length) {
-    const kids = [head(code, "imagery", worlds.length ? T.topics.imagery : (sec.imagery || T.topics.imagery))];
+    const kids = [head(code, "imagery", im.mood_headline || (worlds.length ? T.topics.imagery : (sec.imagery || T.topics.imagery)))];
     const [a, ...rest] = mood;
     kids.push(tile(M, TOP, rest.length ? 1100 : CW, CH2, chipFor(a), { img: a.file, alt: a.alt, generated: a.generated, figure: true, pos: a.pos }));
     const more = rest.slice(0, 2);
@@ -576,7 +579,8 @@ S.logo = (code) => {
       if (d.demo === "rotate") st.transform = "rotate(-16deg)";
       if (d.demo === "shadow") st.filter = "drop-shadow(6px 6px 0 rgba(0,0,0,.4))";
       if (d.demo === "recolor") st.filter = "hue-rotate(150deg) saturate(3)";
-      const busy = d.demo === "busy" ? { backgroundImage: `repeating-linear-gradient(45deg, ${(accent || ink || {}).hex || "#888"} 0 14px, ${(bg || {}).hex || "#fff"} 14px 28px)` } : {};
+      const busy = d.demo === "busy" ? { backgroundImage: `repeating-linear-gradient(45deg, ${(accent || ink || {}).hex || "#888"} 0 14px, ${(bg || {}).hex || "#fff"} 14px 28px)` }
+        : d.demo === "on-accent" ? { background: (accent || ink || {}).hex || "#888" } : {};
       k2.push(tile(M + i * (dw + G), TOP, dw, 520, h("div", { class: "abs strike", style: Object.assign({ inset: 0, display: "grid", placeItems: "center", color: "var(--ink-2)" }, busy) },
         d.demo ? h("img", { src: asset(primary.file), alt: "", style: Object.assign({ width: px(dw * 0.5), height: "auto" }, st) }) : null), { bg: "var(--panel)" }));
       k2.push(tile(M + i * (dw + G), TOP + 520 + G, dw, 130, inside(h("p", { class: "body" }, d.rule), { top: "24px" }), { bg: mix((PAL[0] || feature).hex, 22), fg: "var(--ink)", text: true }));
@@ -645,7 +649,7 @@ S.type = (code) => {
       at(36, 18, h("p", { style: { fontFamily: `"${f.family}", var(--text)`, fontWeight: wt, fontSize: "200px", lineHeight: 1, letterSpacing: "-0.03em" }, "data-font": f.family }, "Aa")),
       h("div", { class: "abs", style: { left: "40px", right: "40px", bottom: "32px" } },
         h("p", { class: "cap" }, T.famRoles[f.role] || f.role),
-        h("p", { class: "disp", style: { fontSize: "36px", lineHeight: 1.05, marginTop: "4px" } }, f.family),
+        h("p", { class: "disp", style: { fontSize: "36px", lineHeight: 1.05, marginTop: "4px" } }, f.name || f.family),
         h("p", { style: { fontFamily: `"${f.family}", var(--text)`, fontWeight: wt, fontSize: "24px", lineHeight: 1.2, marginTop: "14px" } }, sample),
         h("p", { class: "small", style: { marginTop: "12px", color: "var(--ink-2)" } }, f.why || ""),
         h("p", { class: "cap", style: { marginTop: "10px" } }, [f.licence, f.office_substitute ? `${T.substitute}: ${f.office_substitute}` : null].filter(Boolean).join(". ")))
@@ -712,8 +716,8 @@ S.print = (code) => {
   const kids = [head(code, "print", sec.print || T.topics.print)];
   const rowsP = [[T.printer, p.printer || T.notChosen], [T.technology, p.technology], [T.pdf, p.pdf], [T.profile, p.profile], [T.bleedL, p.bleed_mm !== undefined ? `${p.bleed_mm} mm` : null], [T.safeL, p.safe_mm !== undefined ? `${p.safe_mm} mm` : null], [T.smallText, p.small_text], [T.finishes, (p.finishes || []).map((x) => `${x.type}${x.colour ? ` (${x.colour})` : ""}${x.layer ? `, ${x.layer}` : ""}`).join("; ")], [T.proofL, p.proof]].filter(([, v]) => v);
   kids.push(tile(M, TOP, 1060, CH2, inside(h("table", { class: "tb" }, h("tbody", {}, rowsP.map(([k, v]) => h("tr", {}, h("td", { style: { width: "300px" } }, k), h("td", {}, v))))), { top: "30px" }), { bg: "var(--panel)", text: true }));
-  const steps = LANG === "pl" ? [`Eksport do ${p.pdf || "PDF/X-4"} z profilem ${p.profile || "ustalonym z drukarnią"}.`, `Spad ${p.bleed_mm ?? 3} mm i ${p.safe_mm ?? 3} mm marginesu; potwierdzić z drukarnią.`, "Drobny tekst i kod kreskowy w 100% K z nadrukiem.", "Uszlachetnienia i wykrojnik na osobnych warstwach, jako kolory dodatkowe.", "Wykrojnik od drukarni, nie rysowany na oko.", "Próbny wydruk na docelowym papierze przed zatwierdzeniem koloru."]
-    : [`Export to ${p.pdf || "PDF/X-4"} with the ${p.profile || "printer's"} profile.`, `${p.bleed_mm ?? 3} mm bleed and ${p.safe_mm ?? 3} mm safe margin; confirm with the printer.`, "Small text and barcode in 100% K, overprinting.", "Finishes and dieline on separate layers, as spot colours.", "The dieline from the printer, not drawn by eye.", "A proof on the final paper before the colour is approved."];
+  const steps = LANG === "pl" ? [`Eksport do ${p.pdf || "PDF/X-4"} z profilem ${p.profile || "ustalonym z drukarnią"}.`, `Spad ${p.bleed_mm ?? 3} mm i ${p.safe_mm ?? 3} mm marginesu; potwierdzić z drukarnią.`, (B.labels || []).length ? "Drobny tekst i kod kreskowy w 100% K z nadrukiem." : "Drobny tekst w 100% K z nadrukiem.", "Uszlachetnienia i wykrojnik na osobnych warstwach, jako kolory dodatkowe.", "Wykrojnik od drukarni, nie rysowany na oko.", "Próbny wydruk na docelowym papierze przed zatwierdzeniem koloru."]
+    : [`Export to ${p.pdf || "PDF/X-4"} with the ${p.profile || "printer's"} profile.`, `${p.bleed_mm ?? 3} mm bleed and ${p.safe_mm ?? 3} mm safe margin; confirm with the printer.`, (B.labels || []).length ? "Small text and barcode in 100% K, overprinting." : "Small text in 100% K, overprinting.", "Finishes and dieline on separate layers, as spot colours.", "The dieline from the printer, not drawn by eye.", "A proof on the final paper before the colour is approved."];
   kids.push(tile(M + 1060 + G, TOP, CW - 1060 - G, CH2, inside([capOn(T.handoff), h("ol", { class: "n2", style: { marginTop: "16px", font: "400 20px/1.4 var(--text)" } }, steps.map((x) => h("li", { style: { marginBottom: "16px" } }, x)))], { top: "30px" }), { bg: feature.hex, text: true }));
   return [frame(kids, { cap: T.topics.print })];
 };
@@ -773,8 +777,11 @@ const has = { strategy: !!B.strategy, voice: !!B.voice, applications: (B.labels 
 for (const part of ORDER) {
   const items = part.items.filter((id) => has[id]);
   if (!items.length) continue;
+  // The divider names only the rules this book has: a service brand without labels doesn't promise them.
+  const ruleList = ["logo", "colour", "type", "imagery", "labels", "print"].filter((id) => has[id]).map((id) => T.ruleWords[id]);
+  const ruleText = ruleList.length > 1 ? `${ruleList.slice(0, -1).join(", ")} ${T.and} ${ruleList[ruleList.length - 1]}` : ruleList.join("");
   if (part.part === 2) main.append(frame([tile(M, M, CW, CH, [
-    h("p", { class: "abs lead", style: { left: "76px", top: "70px", width: "760px", opacity: 0.82 } }, T.rulesLead),
+    h("p", { class: "abs lead", style: { left: "76px", top: "70px", width: "760px", opacity: 0.82 } }, T.rulesLead(ruleText.charAt(0).toUpperCase() + ruleText.slice(1))),
     h("div", { class: "abs", style: { right: "80px", top: "70px" } }, logoImg(featureLogo, 300)),
     h("p", { class: "abs disp", style: { left: "70px", bottom: "56px", fontSize: "230px", lineHeight: 0.85 } }, T.part2)], { bg: feature.hex })], { frameCls: "part" }));
   let n = 0;

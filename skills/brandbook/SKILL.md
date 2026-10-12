@@ -4,7 +4,7 @@ description: Builds a brand book from a brief, logo files and product data, deli
 license: CC-BY-4.0
 metadata:
   author: Design House
-  version: "1.0"
+  version: "1.1"
 ---
 
 # Brand book
@@ -91,6 +91,7 @@ Look at every section at 1440 px and at the PDF's slides side by side (the deck 
 | "change this colour" | the HEX, CMYK back to `converted` or `proposed`, rebuild, read the contrast matrix again |
 | "make it like this case study" | only the presentation changes (headlines, order of part 1, images); the rules and values stay, the reference stays unnamed |
 | "it's boring" | images first: cover, intro, worlds, product photos, billboard; then `meta.cover_colour` and `strategy.tagline`; the layout stays the template's |
+| "it doesn't look like our site" / "it looks generated" | the brand's own template (`meta.template`, `references/data.md` section 9) in the site's system, real photos before generated ones; archive the old PDF, bump the version |
 | "too long" | cut part 1 first, slide by slide: the mood photos (`slot` `other`), the billboard, then the worlds (both parts come from the same data, so they leave the web book too); send a designer the link with `?reader=designer` |
 | "the printer wants the file" | the designer prepares it from the print section; `labels/*.pdf` are templates |
 | "the proof is back" | CMYK `proofed` with the date, Pantone values, close the decision |
@@ -103,6 +104,8 @@ Look at every section at 1440 px and at the PDF's slides side by side (the deck 
 - **A fallback font without a warning.** `render.mjs check` measures each face with two fallbacks; a missing "ł" shows as an error, not as a slightly different letter.
 - **An example that breaks the book's own norms**, such as the client's current label shown as "the layout", needs the words "layout only" next to it.
 - **A colour used but not defined**: the label text colour, a photo background. Every colour used anywhere is in `colours[]`.
+- **A brand without packaging** (a service, a broker, a studio): `labels` stays empty, and the book drops the label slides and doesn't mention labels on the "Rules" divider. The print section stays, for cards, signage, roll-ups and vehicle graphics; the product-line slot goes to the services, shown as `imagery.worlds`.
+- **A logo that exists only as a raster** (a PNG from the website): the variants are pixel recolourings and crops of that file, recorded as working copies, never a trace or a redraw; the vector master and a flat print version are decisions with a person and a date.
 
 ## Output
 
