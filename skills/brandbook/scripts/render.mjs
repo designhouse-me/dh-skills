@@ -16,7 +16,7 @@
 // min_px, generated images on a slide whose footer doesn't say so, text under 12 px (warning). Text: every strategy
 // and voice field the data has is on a slide (a custom template that drops one is an error); field names and
 // the skill's files in the slides' text (error); tool names, file paths outside the files and quick reference,
-// the agency outside the cover, more than 90 words of prose on a slide (warnings).
+// the agency outside the cover, more than 90 words of prose on a slide or 800 in the book (warnings).
 // check, labels: zone overflow in both axes, mandatory text ([data-legal]) x-height measured in the browser
 // against 1.2 mm (0.9 mm when the largest surface is under 80 cm²) for food and supplements, the height of the
 // net quantity's figures (2/3/4/6 mm by quantity), text contrast on the label colour, fonts, images.
@@ -280,16 +280,17 @@ const TEXT_PROBE = `(() => {
     if (agency && !["cover", "decisions"].includes(sec) && !f.classList.contains("closing") && t.toLowerCase().includes(agency)) named.push(where);
   }
   // Prose per slide: tables of values, mockups, photos, footers, the label checklist and text meant to be pasted (.paste) don't count.
-  const prose = [];
+  const prose = [], per = [];
   let total = 0;
   for (const f of main.querySelectorAll(".frame")) {
     const c = f.cloneNode(true);
     c.querySelectorAll("table, .mock, .bcard, .sig, figure, .foot, .pno, .vals, .paste, .chk, iframe, script, style").forEach((x) => x.remove());
     const n = (c.textContent.match(/[\\p{L}\\p{N}][\\p{L}\\p{N}'’.,%–-]*/gu) || []).length;
     total += n;
+    per.push([f.querySelector(".pno")?.textContent || "?", n]);
     if (n > 90) prose.push("slide " + (f.querySelector(".pno")?.textContent || "?") + " (" + n + ")");
   }
-  return { missing, fields, tools, paths, named, prose, total };
+  return { missing, fields, tools, paths, named, prose, total, per };
 })()`;
 
 const LABEL_PROBE = `(() => {
@@ -354,7 +355,9 @@ async function checkBook(file) {
       for (const f of tx.paths) warn(`book: a file path on ${f}; paths belong on the files slide`);
       if (tx.named.length) warn(`book: the agency is named on ${tx.named.join(", ")}; the book speaks for the brand, the agency signs the cover`);
       if (tx.prose.length) warn(`book: more than 90 words of prose on ${tx.prose.join(", ")}; one rule per slide, show it instead of explaining it (tables of values don't count)`);
-      console.log(`book: ${tx.total} words of prose on the slides (a small brand's book stays under about 1500)`);
+      const top = tx.per.slice().sort((a, b) => b[1] - a[1]).slice(0, 4).map(([pn, n]) => `slide ${pn} (${n})`).join(", ");
+      if (tx.total > 800) warn(`book: ${tx.total} words of prose; a small brand's book stays under about 800. The longest: ${top}`);
+      else console.log(`book: ${tx.total} words of prose on the slides; the longest: ${top}`);
       for (const pr of [...new Set(p.problems)]) err(`book: page error: ${pr}`);
     }
     await p.close();

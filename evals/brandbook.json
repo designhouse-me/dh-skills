@@ -76,7 +76,8 @@
     "No field names, build paths, tool names or the agency's name appear in the book outside the cover (render.mjs check reports none)",
     "The PDF of the book has at most 20 pages",
     "The logo comes from the supplied SVG and isn't redrawn; 01-verify.md or the reply notes the live text in Arial to be outlined by a designer",
-    "render.mjs check reports no slide with more than 90 words of prose, and the book has about 1,500 words of prose or fewer"
+    "render.mjs check reports no slide with more than 90 words of prose and under about 800 words of prose in the book",
+    "Every headline reads as 'Topic: rule' in plain words a newcomer understands; the book has no slide of file paths and no slide of open decisions, which are in 01-verify.md and the reply"
    ]
   }
  ]

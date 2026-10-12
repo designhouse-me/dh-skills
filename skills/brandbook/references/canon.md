@@ -50,10 +50,9 @@ Order by how often a page is needed, not by theory: the quick reference first, t
 | Type | Which face for what, which sizes, what to use in Word or Canva? |
 | Labels | What goes on the front and in what order? Which content is mandatory and who approves it? |
 | Print | Which profile, PDF standard, bleed, finishes? What to send the printer? |
-| Files | Where is the right file, and which ones can go to print as they are? Who may use the logo, under which licence? |
-| Decisions | What still blocks use, who decides and by when? What changed since the last version? |
+| Files | Where is the right file, and which ones can go to print as they are? (On the quick reference and the print slide, not a page of paths.) |
 
-Optional pages earn their place by use: icons and illustration when they're used every month, motion when there is video, signage and vehicles when there are vans, co-branding when partners appear. Open decisions are a handover list, not a chapter: the book shows the ones that block use. A brand story and a technical manual have different readers; big brands add a short guide for partners (Revolut's is 14 slides, GoCardless's 15). For a small brand, one book in two clear parts is enough. An agency case study is a third genre: it tells the project to future clients and has no rules, so don't build the book's pages from one.
+Optional pages earn their place by use: icons and illustration when they're used every month, motion when there is video, signage and vehicles when there are vans, co-branding when partners appear. Open decisions are a handover list next to the book, not a page in it. Headlines say the topic and the rule in plain words ("Colours: yellow only on buttons"); a clever line the owner has to decode is worse than a topic name. A brand story and a technical manual have different readers; big brands add a short guide for partners (Revolut's is 14 slides, GoCardless's 15). For a small brand, one book in two clear parts is enough. An agency case study is a third genre: it tells the project to future clients and has no rules, so don't build the book's pages from one.
 
 ## 4. Text that works
 
@@ -74,7 +73,7 @@ Optional pages earn their place by use: icons and illustration when they're used
 | Topic | Rule |
 |---|---|
 | Length | no study fixes it; of 3,516 guides in one archive, 54% have up to 39 pages and 74% up to 59; practitioners give 10–20 pages for a small firm. Measure time to an answer instead: a HEX code in 30 seconds |
-| Words | people read 20–28% of the words on a page (NN/g); Stripe's brand page is about 140 words, Shopify's 620, Hilti's 26-page guide 890, a good voice section 150–600. One rule per slide, at most about 90 words of prose, about 1,500 for a small brand's whole book; tables of values don't count |
+| Words | people read 20–28% of the words on a page (NN/g); Stripe's brand page is about 140 words, Shopify's 620, Hilti's 26-page guide 890, a good voice section 150–600. One rule per slide, at most about 90 words of prose, under about 800 for a small brand's whole book; tables of values don't count |
 | Clear space | a part of the mark, called x, drawn on a diagram (Spotify: half the icon height; IBM: the height of the "I"); choose an element present in every version |
 | Minimum size | in pairs: px for screen, mm for print, separately for the full logo and the symbol (Spotify: 70 px or 20 mm; the icon 21 px or 6 mm; ING: 12 px or 4 mm) |
 | Foil and embossing | the minimum follows from the thinnest line the finish can hold; confirm with the converter |

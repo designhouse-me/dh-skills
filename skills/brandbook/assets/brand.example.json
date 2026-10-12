@@ -18,18 +18,16 @@
     "status": "draft"
   },
   "sections": {
-    "strategy": "Sprzedajemy kawę, którą palimy we wtorek i wysyłamy w środę.",
-    "positioning": "Porównujemy się z kawą bez daty, nie z innymi palarniami.",
-    "voice": "Mówimy jak palacz przy piecu: konkretnie, z datą i z liczbą.",
-    "applications": "Każdy materiał zaczyna się od daty palenia, nie od przymiotnika.",
-    "logo": "Logo zawsze ma wokół siebie jedno x wolnego miejsca.",
-    "colour": "Rzeka i papier niosą markę, rdza pojawia się raz na stronie.",
-    "type": "Nagłówki są kanciaste jak szablon na worku, tekst spokojny.",
-    "imagery": "Pokazujemy kawę w rękach ludzi, którzy ją palą, w dziennym świetle.",
-    "labels": "Kolor zmienia się z pochodzeniem, układ etykiety nigdy.",
-    "print": "Kolor zatwierdzamy na próbnym wydruku, nie na ekranie.",
-    "files": "Logo bierzesz z paczki plików, nigdy nie przerysowujesz.",
-    "decisions": "Trzy rzeczy czekają na decyzję i każda ma osobę oraz termin."
+    "strategy": "Kim jesteśmy: palarnia, która wysyła kawę dzień po paleniu.",
+    "positioning": "Z czym nas porównują: z kawą bez daty palenia.",
+    "voice": "Jak mówimy: konkretnie, z datą i liczbą.",
+    "applications": "Materiały: zawsze z datą palenia.",
+    "logo": "Logo: zawsze z wolnym miejscem dookoła.",
+    "colour": "Kolory: rdza najwyżej raz na stronie.",
+    "type": "Krój pisma: kanciasty w nagłówkach, spokojny w tekście.",
+    "imagery": "Zdjęcia: prawdziwi ludzie przy piecu, dzienne światło.",
+    "labels": "Etykiety: kolor zmienia się z pochodzeniem, układ nie.",
+    "print": "Druk: kolor zatwierdzamy na próbnym wydruku."
   },
   "quickref": {
     "rules": [
@@ -96,13 +94,12 @@
       }
     ],
     "decision_rules": [
-      "Gdy nie wiesz, co napisać, napisz, kiedy i skąd jest kawa.",
-      "Gdy nie wiesz, jakiego koloru użyć, użyj papieru i rzeki."
+      "Gdy nie wiesz, co napisać, napisz, kiedy i skąd jest kawa."
     ],
     "signature": "Pieczątka z datą palenia, która stoi na paczce, w poście i w stopce maila.",
     "rejected": [
-      "Brązowa paleta z ziarnem kawy w logo, jak w każdej kawiarni: zamiast tego chłodna rzeka i papier.",
-      "Kremowe tło z ozdobnym szeryfem jak w sieciówkach: zamiast tego szary papier i kanciasty szablon."
+      "Brązowa paleta z ziarnem w logo.",
+      "Kremowe tło z ozdobnym szeryfem."
     ]
   },
   "voice": {
@@ -119,17 +116,17 @@
     "tone": [
       {
         "channel": "Paczka",
-        "how": "Fakty: pochodzenie, data palenia, nuty smaku.",
+        "how": "Pochodzenie, data, smak.",
         "example": "Palona 7 października. Etiopia, Guji. Morela i jaśmin."
       },
       {
         "channel": "Instagram",
-        "how": "Luźniej, z ludźmi i piecem.",
+        "how": "Luźniej, z ludźmi.",
         "example": "Wtorek, 6:40. Piec rozgrzany, Etiopia już pachnie."
       },
       {
         "channel": "Reklamacja",
-        "how": "Krótko, bez żartów, z rozwiązaniem.",
+        "how": "Krótko, bez żartów.",
         "example": "Przepraszamy. Nowa paczka wyjdzie jutro rano."
       }
     ],
@@ -434,12 +431,12 @@
     "images": [],
     "ai": {
       "allowed": [
-        "szkice kadrów do sesji",
+        "szkice kadrów",
         "tła do makiet"
       ],
       "banned": [
-        "ludzie podani jako pracownicy palarni",
-        "paczka z wygenerowanym kodem kreskowym"
+        "ludzie jako pracownicy",
+        "wygenerowany kod kreskowy"
       ],
       "label": "Wizualizacja",
       "approver": "Anna Przykładowa"

@@ -161,11 +161,10 @@ def check(brand, root):
         warn("meta.label_approver is missing: name who approves labels before print; if nobody is named yet, write \"(do wskazania)\" and ask in the reply")
     present = {"strategy": brand.get("strategy"), "voice": brand.get("voice"), "applications": brand.get("applications"),
                "logo": brand.get("logo"), "colour": brand.get("colours"), "type": brand.get("type"),
-               "imagery": brand.get("imagery"), "labels": brand.get("labels"), "print": brand.get("print"),
-               "files": brand.get("files"), "decisions": brand.get("decisions")}
+               "imagery": brand.get("imagery"), "labels": brand.get("labels"), "print": brand.get("print")}
     for sid, data in present.items():
         if data and not sections.get(sid):
-            warn(f"sections.{sid}: no headline; write the rule as a statement (\"The variant changes the colour, not the layout\"), not the topic")
+            warn(f"sections.{sid}: no headline; name the topic and the rule in plain words (\"Colours: yellow only on buttons and key numbers\")")
     if not meta.get("home"):
         warn("meta.home is missing: say where the current version of the book and the files lives (a link or a shared folder); a book nobody can find goes unused")
     rules = (brand.get("quickref") or {}).get("rules") or []
@@ -428,8 +427,6 @@ def check(brand, root):
     for d in decisions:
         if not d.get("who") or not d.get("by"):
             warn(f"decision {d.get('what')!r} has no person or date")
-    if len(decisions) > 6 and not any(d.get("blocks") for d in decisions):
-        warn(f"{len(decisions)} decisions and none marked blocks: the book shows the first six and counts the rest; mark the ones that stop someone using the book")
     made_by = str(meta.get("made_by") or "").strip().lower()
     for path, value in strings({k: v for k, v in brand.items() if k != "references"}):
         leaf = re.sub(r"\[\d+\]", "", path).split(".")[-1]

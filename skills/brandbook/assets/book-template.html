@@ -222,7 +222,7 @@ Object.assign(T, LANG === "pl" ? {
   ruleWords: { logo: "logo", colour: "kolor", type: "pismo", imagery: "zdjęcia", labels: "etykiety", print: "druk" }, and: "i",
   labelSlide: "Etykieta", more: "ciąg dalszy", products: "Linia produktów", templateShort: "Szablon etykiety, nie plik do druku.",
   howWe: "Jak fotografujemy", aiShort: "Obrazy z AI",
-  subShort: "Zamiennik", start: "Na skróty", quickTitle: "Pierwszego dnia wystarczy ta strona.", quickRules: "Zasady na co dzień", quickLogo: "Logo do pobrania", quickColours: "Kolory", quickType: "Pismo", quickAsk: "Pytania i pliki", home: "Aktualna wersja", company: "Dane firmy na ofertach",
+  printFiles: "Pliki do druku", noPrintFiles: "jeszcze nie ma", subShort: "Zamiennik", start: "Na skróty", quickTitle: "Pierwszego dnia wystarczy ta strona.", quickRules: "Zasady na co dzień", quickLogo: "Logo do pobrania", quickColours: "Kolory", quickType: "Pismo", quickAsk: "Pytania i pliki", home: "Aktualna wersja", company: "Dane firmy na ofertach",
   positioning: "Zamiast czego", alternative: "Zamiast nas klient", problem: "Co wtedy traci", we: "Co robimy my", category: "Porównują nas z", asOf: "stan na",
   inPractice: "W praktyce", moment: "Sytuacja", ruleCol: "Zasada", write: "Piszemy", avoidCol: "Nie piszemy",
   boilerplate: "Opis do wklejenia", boilerLine: "W jednym zdaniu", boilerShort: "W pięćdziesięciu słowach", fixed: "Stałe linie", editorial: "Redakcja",
@@ -235,7 +235,7 @@ Object.assign(T, LANG === "pl" ? {
   ruleWords: { logo: "logo", colour: "colour", type: "type", imagery: "imagery", labels: "labels", print: "print" }, and: "and",
   labelSlide: "Label", more: "continued", products: "The product line", templateShort: "A label template, not a print file.",
   howWe: "How we photograph", aiShort: "AI images",
-  subShort: "Substitute", start: "Quick reference", quickTitle: "On the first day, this page is enough.", quickRules: "Everyday rules", quickLogo: "Logo to download", quickColours: "Colours", quickType: "Type", quickAsk: "Questions and files", home: "Current version", company: "Company details for offers",
+  printFiles: "Print-ready files", noPrintFiles: "none yet", subShort: "Substitute", start: "Quick reference", quickTitle: "On the first day, this page is enough.", quickRules: "Everyday rules", quickLogo: "Logo to download", quickColours: "Colours", quickType: "Type", quickAsk: "Questions and files", home: "Current version", company: "Company details for offers",
   positioning: "Instead of what", alternative: "Instead of us, the customer", problem: "What goes wrong there", we: "What we do", category: "Compared with", asOf: "as of",
   inPractice: "In practice", moment: "Situation", ruleCol: "Rule", write: "We write", avoidCol: "We don't write",
   boilerplate: "Description to paste", boilerLine: "In one sentence", boilerShort: "In fifty words", fixed: "Fixed lines", editorial: "House style",
@@ -255,7 +255,6 @@ const READERS = {
   start: ["owner", "marketing", "designer", "printer"], strategy: ["owner", "marketing", "designer"], voice: ["marketing", "owner"], applications: ["owner", "marketing", "designer"],
   imagery: ["marketing", "designer"], logo: ["designer", "printer", "marketing"], colour: ["designer", "printer", "marketing"],
   type: ["designer", "marketing"], labels: ["designer", "printer"], print: ["printer", "designer"],
-  files: ["owner", "designer", "printer", "marketing"], decisions: ["owner", "designer"]
 };
 
 /* ---------- helpers ---------- */
@@ -796,39 +795,12 @@ S.labels = (code) => (B.labels || []).map((l, li) => {
 S.print = (code) => {
   const p = B.print;
   const kids = [head(code, "print", sec.print || T.topics.print)];
-  const rowsP = [[T.printer, p.printer || T.notChosen], [T.technology, p.technology], [T.pdf, p.pdf], [T.profile, p.profile], [T.bleedL, p.bleed_mm !== undefined ? `${p.bleed_mm} mm` : null], [T.safeL, p.safe_mm !== undefined ? `${p.safe_mm} mm` : null], [T.smallText, p.small_text], [T.finishes, (p.finishes || []).map((x) => `${x.type}${x.colour ? ` (${x.colour})` : ""}${x.layer ? `, ${x.layer}` : ""}`).join("; ")], [T.proofL, p.proof]].filter(([, v]) => v);
+  const rowsP = [[T.printer, p.printer || T.notChosen], [T.technology, p.technology], [T.pdf, p.pdf], [T.profile, p.profile], [T.bleedL, p.bleed_mm !== undefined ? `${p.bleed_mm} mm` : null], [T.safeL, p.safe_mm !== undefined ? `${p.safe_mm} mm` : null], [T.smallText, p.small_text], [T.finishes, (p.finishes || []).map((x) => `${x.type}${x.colour ? ` (${x.colour})` : ""}${x.layer ? `, ${x.layer}` : ""}`).join("; ")], [T.proofL, p.proof], [T.printFiles, (B.files || []).filter((f) => f.print_ready === true).map((f) => f.path).join(", ") || T.noPrintFiles]].filter(([, v]) => v);
   kids.push(tile(M, TOP, 1060, CH2, inside(h("table", { class: "tb" }, h("tbody", {}, rowsP.map(([k, v]) => h("tr", {}, h("td", { style: { width: "300px" } }, k), h("td", {}, v))))), { top: "30px" }), { bg: "var(--panel)", text: true }));
   const steps = LANG === "pl" ? [`Eksport do ${p.pdf || "PDF/X-4"} z profilem ${p.profile || "ustalonym z drukarnią"}.`, `Spad ${p.bleed_mm ?? 3} mm i ${p.safe_mm ?? 3} mm marginesu; potwierdzić z drukarnią.`, (B.labels || []).length ? "Drobny tekst i kod kreskowy w 100% K z nadrukiem." : "Drobny tekst w 100% K z nadrukiem.", "Uszlachetnienia i wykrojnik na osobnych warstwach, jako kolory dodatkowe.", "Wykrojnik od drukarni, nie rysowany na oko.", "Próbny wydruk na docelowym papierze przed zatwierdzeniem koloru."]
     : [`Export to ${p.pdf || "PDF/X-4"} with the ${p.profile || "printer's"} profile.`, `${p.bleed_mm ?? 3} mm bleed and ${p.safe_mm ?? 3} mm safe margin; confirm with the printer.`, (B.labels || []).length ? "Small text and barcode in 100% K, overprinting." : "Small text in 100% K, overprinting.", "Finishes and dieline on separate layers, as spot colours.", "The dieline from the printer, not drawn by eye.", "A proof on the final paper before the colour is approved."];
   kids.push(tile(M + 1060 + G, TOP, CW - 1060 - G, CH2, inside([capOn(T.handoff), h("ol", { class: "n2", style: { marginTop: "16px", font: "400 20px/1.4 var(--text)" } }, steps.map((x) => h("li", { style: { marginBottom: "16px" } }, x)))], { top: "30px" }), { bg: feature.hex, text: true }));
   return [frame(kids, { cap: T.topics.print })];
-};
-
-/* The changelog sits with the files: which version of the book and the files someone is holding. */
-const logTile = (x, w) => tile(x, TOP, w, CH2, inside([capOn(T.changelog), ...(B.changelog || []).slice(-6).reverse().map((c) => h("div", { style: { marginTop: "16px" } }, h("p", { class: "disp", style: { fontSize: "26px" } }, c.version), h("p", { class: "small soft" }, `${c.date}. ${c.change}`)))], { top: "30px" }), { bg: feature.hex, text: true });
-S.files = (code) => {
-  const groups = chunk(B.files || [], 9);
-  if (!groups.length) groups.push([]);
-  return groups.map((grp, gi) => {
-    const showLog = gi === 0 && (B.changelog || []).length;
-    const w = showLog ? CW - 520 - G : CW;
-    const kids = [head(code, "files", gi === 0 ? (sec.files || T.topics.files) : `${T.topics.files}, ${T.more}`),
-      tile(M, TOP, w, CH2, inside(h("table", { class: "tb" }, h("thead", {}, h("tr", {}, h("th", {}, T.filePath), h("th", {}, T.what), h("th", {}, T.printReady))),
-        h("tbody", {}, grp.map((f) => h("tr", {}, h("td", { style: { width: showLog ? "420px" : "520px" } }, h("a", { href: asset(f.path) }, f.path)), h("td", {}, f.what), h("td", { style: { width: "150px" } }, f.print_ready === true ? T.yes : f.print_ready === false ? T.noWord : "–"))))), { top: "30px" }), { bg: "var(--panel)", text: true })];
-    if (showLog) kids.push(logTile(M + w + G, 520));
-    return frame(kids, { cap: T.topics.files });
-  });
-};
-
-/* Open decisions are a handover list: the book shows six, the ones that block use first, and counts the rest. */
-S.decisions = (code) => {
-  const all = (B.decisions || []).map((x, i) => [x, i]).sort((a, b) => (b[0].blocks ? 1 : 0) - (a[0].blocks ? 1 : 0) || a[1] - b[1]).map(([x]) => x);
-  const shown = all.slice(0, 6), rest = all.length - shown.length;
-  if (!shown.length) return [];
-  return [frame([head(code, "decisions", sec.decisions || T.topics.decisions),
-    tile(M, TOP, CW, CH2, inside([h("table", { class: "tb" }, h("thead", {}, h("tr", {}, h("th", {}, T.decWhat), h("th", {}, T.decWho), h("th", {}, T.decBy), h("th", {}, T.decRec))),
-      h("tbody", {}, shown.map((x) => h("tr", {}, h("td", { style: { width: "320px" } }, x.what), h("td", { style: { width: "240px" } }, x.who || "?"), h("td", { style: { width: "130px" } }, x.by || "?"), h("td", {}, x.recommendation || ""))))),
-      rest > 0 ? h("p", { class: "small", style: { marginTop: "18px", color: "var(--ink-2)" } }, T.moreDecisions(rest)) : null], { top: "30px" }), { bg: "var(--panel)", text: true })], { cap: T.topics.decisions })];
 };
 
 /* The quick reference: what someone needs on the first day, right after the cover. */
@@ -876,8 +848,8 @@ const tocItems = [];
 /* The quick reference stands outside the two parts, right after the cover; the deck ends with the last rule, not a decorative slide. */
 main.append(h("section", { class: "s", id: "start", "data-readers": READERS.start.join(" "), "aria-label": T.topics.start }, S.start()));
 tocItems.push({ id: "start", code: "0", part: 0, title: T.topics.start });
-const ORDER = [{ part: 1, items: ["strategy", "voice", "applications", "imagery"] }, { part: 2, items: ["logo", "colour", "type", "labels", "print", "files", "decisions"] }];
-const has = { strategy: !!B.strategy, voice: !!B.voice, applications: (B.labels || []).length > 0 || (B.applications || []).length > 0, imagery: !!B.imagery, logo: !!(B.logo && primary), colour: colours.length > 0, type: !!B.type, labels: (B.labels || []).length > 0, print: !!B.print, files: (B.files || []).length > 0, decisions: true };
+const ORDER = [{ part: 1, items: ["strategy", "voice", "applications", "imagery"] }, { part: 2, items: ["logo", "colour", "type", "labels", "print"] }];
+const has = { strategy: !!B.strategy, voice: !!B.voice, applications: (B.labels || []).length > 0 || (B.applications || []).length > 0, imagery: !!B.imagery, logo: !!(B.logo && primary), colour: colours.length > 0, type: !!B.type, labels: (B.labels || []).length > 0, print: !!B.print };
 for (const part of ORDER) {
   const items = part.items.filter((id) => has[id]);
   if (!items.length) continue;
