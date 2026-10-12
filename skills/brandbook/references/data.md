@@ -31,7 +31,7 @@ Read when you fill or change `brand.json`. Start from `assets/brand.example.json
 
 The text people copy is in this section, so every field is a rule or a sentence someone can use, not a description of the brand. Three tests before a sentence goes in: could a competitor say it with their name in it; does it rule anything out; is there a fact behind it. A sentence that fails all three goes. Keep every item to one line (about 12 words); the book is read, not studied.
 
-- `strategy.tagline`: the brand's line, short (best under 35 characters); it is the cover and the quick reference. Without it the cover shows the name.
+- `strategy.tagline`: the brand's line, short (best under 35 characters); the cover shows it under the title "Księga marki", never instead of it.
 - `strategy.purpose`: one or two sentences, why the brand exists, said as what it does for whom; the intro slide leads with it.
 - `strategy.story` (optional): two or three sentences under the purpose. `strategy.fact` (optional): `{value, label}`, one big true number or fact from the brief ("od 2019", "4 sezony").
 - `audience`: who gets the most from the brand, in their situation ("owners of small firms who need a machine, including those turned down by a bank"), not "everyone who…".

@@ -222,6 +222,7 @@ Object.assign(T, LANG === "pl" ? {
   ruleWords: { logo: "logo", colour: "kolor", type: "pismo", imagery: "zdjęcia", labels: "etykiety", print: "druk" }, and: "i",
   labelSlide: "Etykieta", more: "ciąg dalszy", products: "Linia produktów", templateShort: "Szablon etykiety, nie plik do druku.",
   howWe: "Jak fotografujemy", aiShort: "Obrazy z AI",
+  bookTitle: "Księga marki", coverWhat: "jak marka wygląda i jak mówi. Dla właściciela, grafików, drukarni i osób, które robią materiały.", startHere: "Najważniejsze na stronie 2.",
   printFiles: "Pliki do druku", noPrintFiles: "jeszcze nie ma", subShort: "Zamiennik", start: "Na skróty", quickTitle: "Pierwszego dnia wystarczy ta strona.", quickRules: "Zasady na co dzień", quickLogo: "Logo do pobrania", quickColours: "Kolory", quickType: "Pismo", quickAsk: "Pytania i pliki", home: "Aktualna wersja", company: "Dane firmy na ofertach",
   positioning: "Zamiast czego", alternative: "Zamiast nas klient", problem: "Co wtedy traci", we: "Co robimy my", category: "Porównują nas z", asOf: "stan na",
   inPractice: "W praktyce", moment: "Sytuacja", ruleCol: "Zasada", write: "Piszemy", avoidCol: "Nie piszemy",
@@ -235,6 +236,7 @@ Object.assign(T, LANG === "pl" ? {
   ruleWords: { logo: "logo", colour: "colour", type: "type", imagery: "imagery", labels: "labels", print: "print" }, and: "and",
   labelSlide: "Label", more: "continued", products: "The product line", templateShort: "A label template, not a print file.",
   howWe: "How we photograph", aiShort: "AI images",
+  bookTitle: "Brand book", coverWhat: "how the brand looks and speaks. For the owner, designers, printers and whoever makes materials.", startHere: "The essentials are on page 2.",
   printFiles: "Print-ready files", noPrintFiles: "none yet", subShort: "Substitute", start: "Quick reference", quickTitle: "On the first day, this page is enough.", quickRules: "Everyday rules", quickLogo: "Logo to download", quickColours: "Colours", quickType: "Type", quickAsk: "Questions and files", home: "Current version", company: "Company details for offers",
   positioning: "Instead of what", alternative: "Instead of us, the customer", problem: "What goes wrong there", we: "What we do", category: "Compared with", asOf: "as of",
   inPractice: "In practice", moment: "Situation", ruleCol: "Rule", write: "We write", avoidCol: "We don't write",
@@ -832,16 +834,17 @@ S.start = () => {
 const main = document.getElementById("main");
 const M0 = B.meta, s0 = B.strategy || {};
 const hero = imgSlot("cover");
-const tag = s0.tagline || M0.name;
-const tagSize = tag.length > 60 ? 76 : tag.length > 34 ? 104 : 150;
 main.append(frame([
   tile(M, M, CW, 690, [
     h("div", { class: "abs", style: { left: "48px", top: "44px" } }, logoImg(hero ? (logoFor((B.imagery || {}).hero_on) || featureLogo) : featureLogo, 260)),
     hero ? (hero.caption ? h("figcaption", { class: "chip", style: { left: "auto", right: "18px" } }, hero.caption) : null)
       : h("div", { class: "abs", style: { right: "44px", bottom: "44px", display: "flex", gap: "12px" } }, PAL.filter((c) => c !== feature).slice(0, 6).map((c) => h("div", { style: { width: "104px", height: "104px", borderRadius: "14px", background: c.hex, boxShadow: contrast(c.hex, feature.hex) < 1.3 ? "inset 0 0 0 1.5px rgba(255,255,255,.4)" : null } })))
   ], hero ? { img: hero.file, alt: hero.alt, generated: hero.generated, figure: true, pos: hero.pos } : { bg: feature.hex }),
-  at(M - 4, 752, h("p", { class: "h-cover", style: { fontSize: px(tagSize), width: "1840px" } }, tag)),
-  h("p", { class: "abs small", style: { left: px(M), bottom: "44px", color: "var(--ink-2)" } }, `Brandbook ${M0.version}, ${M0.date}, ${M0.status === "approved" ? T.approved : T.draft}${M0.owner ? `. ${T.owner}: ${M0.owner}` : ""}${M0.made_by ? `. ${T.madeBy}: ${M0.made_by}` : ""}`)
+  // The cover says what the document is, for whom and where to start; the brand's line comes second.
+  at(M - 4, 744, h("p", { class: "h-cover", style: { fontSize: "150px", width: "1060px" } }, T.bookTitle)),
+  at(1140, 752, h("div", { style: { width: "740px" } }, h("p", { class: "lead" }, `${M0.name}: ${T.coverWhat}`),
+    s0.tagline ? h("p", { class: "disp", style: { fontSize: "30px", lineHeight: 1.2, marginTop: "16px", color: "var(--ink-2)" } }, `„${s0.tagline}”`) : null)),
+  h("p", { class: "abs small", style: { left: px(M), bottom: "44px", color: "var(--ink-2)" } }, `${T.version} ${M0.version}, ${M0.date}, ${M0.status === "approved" ? T.approved : T.draft}. ${T.startHere}${M0.made_by ? ` ${T.madeBy}: ${M0.made_by}.` : ""}`)
 ], { id: "top", frameCls: "cover" }));
 
 const tocItems = [];

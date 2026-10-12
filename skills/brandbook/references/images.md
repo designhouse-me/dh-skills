@@ -76,6 +76,8 @@ codex exec -C brand -s workspace-write --skip-git-repo-check --image=images/refs
 - About 40 seconds per image, 1536 × 1024 or 1024 × 1536 (ask for 3:2 or 2:3 in the prompt). Three runs side by side worked. The original stays in `~/.codex/generated_images/<session>/`; write that path into the log.
 - A label reference is the front zone cropped from `out/labels/<id>-preview.png` (the preview includes the bleed, so the zone starts at `x_mm + bleed_mm`). Render the labels again after any change to them, before you crop.
 
+**An artistic cover.** When the cover has to be striking and the brand forbids staged photos of its work, the cover can be an artwork instead: a screen-print, linocut or poster in the brand's two or three colours, the subject on one side, the other side dark and calm for the title. It may not pose as a photo of the brand's work, it is labelled like any generated image, and `imagery.ai.allowed` says so. In one project the owner called a photo cover that copied the website's hero "weak and boring"; a two-colour poster of the machine as a monument against a huge yellow sun was approved. Generate three styles side by side, check each at full size for letters, logos and impossible parts, and keep the one whose title side stays clear.
+
 ## 7. Placing images in the book
 
 Convert each approved PNG to JPEG for the book and keep the PNG in `images/gen/` as the log's source: a deck of fourteen PNGs is over 30 MB.
