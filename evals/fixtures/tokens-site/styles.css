@@ -1,0 +1,15 @@
+body { margin: 0; background: var(--color-surface); color: var(--color-text); font: var(--text-body)/var(--leading-body) Georgia, serif; }
+.wrap { max-width: 72rem; margin: 0 auto; padding: 0 var(--space-5); }
+section { padding-block: var(--space-8); }
+h1 { font-size: var(--text-h1); line-height: var(--leading-tight); margin: 0 0 var(--space-4); }
+h2 { font-size: var(--text-h2); line-height: 1.15; margin: 0 0 var(--space-5); }
+p { max-width: var(--measure); }
+.services { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--space-5); }
+.card { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-card); padding: var(--space-5); }
+.card h3 { font-size: var(--text-h3); margin: 0; }
+.card p { color: var(--color-muted); margin: 0; }
+.button { display: inline-block; padding: var(--space-2) var(--space-4); border-radius: var(--radius-control); background: var(--color-accent); color: var(--color-card); text-decoration: none; font-size: var(--text-small); }
+footer { padding-block: var(--space-6); border-top: 1px solid var(--color-border); color: var(--color-muted); font-size: var(--text-small); }
+
+/* Older promo banner, written before the token file. Left as it is unless someone asks. */
+.legacy-promo { padding: 22px 18px; margin-bottom: 30px; background: #efe6d6; color: #444; font-size: 15px; border-radius: 7px; }

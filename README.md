@@ -34,6 +34,7 @@ You don't have to name a skill. Describe the task and the agent picks the right 
 | code a site from an approved plan | "build the site from the plan" | `website-build` |
 | get an honest score for a finished site | "review this site before we show it to the client" | `website-review` |
 | make an interface stop looking AI-made | "it looks generated: dots everywhere, Inter and Lucide again" | `ui-without-slop` |
+| keep new UI on the project's spacing, type and colour scale | "it keeps inventing paddings and font sizes, make it use our variables" | `ui-tokens` |
 | write or fix a text so it doesn't read as AI-made | "this About section sounds like ChatGPT, rewrite it and keep the facts" | `copy-without-slop` |
 | make a video or an animation from code | "a 20-second promo for our app, also as a 9:16 reel" | `motion-design` |
 | add or fix motion inside a website or app | "make the cart panel animate smoothly even when I close and reopen it quickly" | `ui-motion` |
@@ -65,6 +66,18 @@ Removes the look of AI-made interfaces and replaces each pattern with a design d
 - **text hierarchy:** reading order, jumps in size and weight, a headline set as one lockup;
 - **icons:** when a place needs one at all, and how to choose a set instead of Lucide by default;
 - **component kits:** shadcn/ui and Magic UI restyled, with their keyboard behaviour kept.
+
+### Values: `ui-tokens`
+
+Keeps spacing, font sizes, colours and corner radii on the project's declared scale when an agent adds or changes UI. Models write plausible numbers instead of looking up tokens and copy the literals in the file next door, and a rule in the prompt alone still leaks, so the skill pairs a short method with a check script. It covers:
+
+- **reading the system first:** the script lists the declared tokens by family, with values in px, and counts the literals already in use;
+- **no scale yet:** one token file derived from the values the project already uses, with defaults for spacing, type roles, colour and radius;
+- **new values:** the nearest step first, otherwise a named token in the token file, and never a token's value changed to fix one element;
+- **the check** (`check_tokens.py`, Python standard library only): literal px, rem and hex values, invented `var()` names, local custom properties holding literals, Tailwind bracket values and steps a theme reset removed; in older code it checks only the lines you changed;
+- **enforcement on request:** the same script as a Claude Code hook after every edit, Stylelint core rules for plain CSS, and a Tailwind v4 theme reset with an ESLint plugin.
+
+The research behind it, with sources, is in `docs/research/skala-i-tokeny-2026-10.md` (in Polish).
 
 ### Text: `copy-without-slop`
 

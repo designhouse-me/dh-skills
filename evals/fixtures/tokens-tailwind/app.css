@@ -1,0 +1,11 @@
+/* Test Tailwind v4 entry for the ui-tokens skill evals. The theme keeps only the project's own steps. */
+@import "tailwindcss";
+@theme {
+  --spacing-*: initial;
+  --spacing-0: 0px; --spacing-1: 0.25rem; --spacing-2: 0.5rem; --spacing-3: 0.75rem; --spacing-4: 1rem;
+  --spacing-6: 1.5rem; --spacing-8: 2rem; --spacing-12: 3rem; --spacing-16: 4rem; --spacing-24: 6rem;
+  --text-*: initial;
+  --text-small: 0.875rem; --text-body: 1rem; --text-lead: 1.25rem; --text-h3: 1.5rem; --text-h2: 2rem; --text-h1: 3rem;
+  --color-ink: #17201b; --color-muted: #55615a; --color-paper: #f4f6f2; --color-accent: #1d6b45; --color-line: #d7ddd6;
+  --radius-control: 6px; --radius-card: 14px;
+}

@@ -95,7 +95,7 @@
     },
     {
       "query": "change the main button colour to green",
-      "expected_skill": null
+      "expected_skill": "ui-tokens"
     },
     {
       "query": "do an accessibility audit of the contact form: labels, contrast, focus",
@@ -284,6 +284,42 @@
     {
       "query": "make a short generated animation explaining this statistic for an insert into my recorded interview",
       "expected_skill": "motion-design"
+    },
+    {
+      "query": "every time Claude adds a section it invents its own paddings and font sizes instead of using our CSS variables, make it stick to them",
+      "expected_skill": "ui-tokens"
+    },
+    {
+      "query": "add a team section to the joinery site but keep to the spacing and type scale in styles/tokens.css",
+      "expected_skill": "ui-tokens"
+    },
+    {
+      "query": "the stylesheet is full of magic numbers, 13px here, 15px there, 22px gaps. set up design tokens and use them",
+      "expected_skill": "ui-tokens"
+    },
+    {
+      "query": "set up a hook so the agent can't sneak p-[13px] and text-[15px] into our Tailwind v4 project anymore",
+      "expected_skill": "ui-tokens"
+    },
+    {
+      "query": "our font sizes are all over the place, I counted about 30 different ones. consolidate them into a type scale",
+      "expected_skill": "ui-tokens"
+    },
+    {
+      "query": "the hero looks generic, pick a better typeface and colour palette for the bakery",
+      "expected_skill": "ui-without-slop"
+    },
+    {
+      "query": "make the FAQ accordion open and close smoothly and keep it working with the keyboard",
+      "expected_skill": "ui-motion"
+    },
+    {
+      "query": "convert our Figma tokens JSON into Swift and Kotlin constants for the iOS and Android apps",
+      "expected_skill": null
+    },
+    {
+      "query": "fix the TypeScript error in theme.ts, the build fails on line 40",
+      "expected_skill": null
     }
   ]
 }

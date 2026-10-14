@@ -1,0 +1,129 @@
+{
+  "skill_name": "ui-tokens",
+  "description": "Companies, people and prices are fictional. Fixtures: evals/fixtures/tokens-site (a token file, one older banner with literals), evals/fixtures/tokens-none (no token file, literals everywhere), evals/fixtures/tokens-tailwind (Tailwind v4 with the spacing and text namespaces reset). Work on a copy of the fixture, committed to a fresh git repo so --changed separates new lines from old ones. 'The check' means python3 skills/ui-tokens/scripts/check_tokens.py --changed <copy>. Run each eval 3 times, with and without the skill.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "add a testimonials section with three short quotes under 'What we make' in evals/fixtures/tokens-site/index.html. Quotes: 'They fitted the stairs in two days.' (Ruth, Acomb), 'The wardrobe fits the eaves exactly.' (Dev, Clifton), 'Clean, tidy and on time.' (Maria, Heworth)",
+      "expected_output": "A new section whose spacing, type, colours and radius come only from tokens.css, with the check clean on the new lines and the token file unchanged.",
+      "files": [],
+      "assertions": [
+        "The check reports 0 errors on lines added by the change",
+        "No new px, rem or hex literal appears in a margin, padding, gap, font-size, color, background or border-radius declaration outside tokens.css",
+        "Every var(--…) the change uses is declared in tokens.css (in particular no --space-7 or --space-9)",
+        "The values of existing tokens in tokens.css are unchanged",
+        "The three quotes and names appear verbatim"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "the card titles in evals/fixtures/tokens-site feel cramped against the text below, add about 13px of space under them",
+      "expected_output": "The gap under .card h3 uses an existing step (var(--space-3) 12px or var(--space-4) 16px), or, if neither fits, a new named token; never 13px. The reply says which step and why.",
+      "files": [],
+      "assertions": [
+        "styles.css contains no 13px and no 0.8125rem",
+        "The space under the card titles uses var(--space-3), var(--space-4) or a new token declared in tokens.css with a role name",
+        "If a new token was added, the reply gives its name, value, role and why no existing step fit",
+        "The reply names the step used"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "the 'Book a visit' button in evals/fixtures/tokens-site is too small, make it bigger",
+      "expected_output": "The button's own padding and font size move to larger existing steps or a button token; the global scale stays as it was.",
+      "files": [],
+      "assertions": [
+        "The values of --space-2, --space-4 and --text-small in tokens.css are unchanged",
+        "The .button rule uses tokens for padding and font-size (existing ones, or new button tokens declared in tokens.css)",
+        "The check reports 0 errors on lines added by the change"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "add a second line to the promo banner at the top of evals/fixtures/tokens-site/index.html: 'Free measuring within the York ring road.'",
+      "expected_output": "The new line uses tokens. The older .legacy-promo literals are reported as a finding, not rewritten, because nobody asked for a refactor.",
+      "files": [],
+      "assertions": [
+        "The .legacy-promo declarations (22px 18px, 30px, #efe6d6, #444, 15px, 7px) are unchanged, or the reply explicitly asks before changing them",
+        "Any CSS added for the new line uses tokens only",
+        "The reply mentions the older literals in .legacy-promo as a finding left as it is",
+        "The new sentence appears verbatim"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "add a short FAQ section (3 questions about appointments, cancellations and parking) to evals/fixtures/tokens-none. make up nothing about the clinic, leave answers as placeholders for the owner",
+      "expected_output": "Before the section, a token file with a spacing scale, type roles, colours and radius derived from the values the stylesheet already uses; the FAQ uses only those tokens; the reply shows which existing values were snapped to which step.",
+      "files": [],
+      "assertions": [
+        "A token file exists (e.g. tokens.css or a :root block at the top of styles.css) declaring spacing, font-size, colour and radius tokens before the FAQ CSS",
+        "The token values are traceable to the existing stylesheet (e.g. #0f766e and #52606d among the colours, steps near the existing 20-22px gaps) rather than an unrelated new set",
+        "The FAQ section's CSS has no px, rem or hex literal in margin, padding, gap, font-size, color, background or border-radius",
+        "The reply lists the scale and which existing values map to which step",
+        "The existing sections are not rewritten wholesale; the reply offers the migration of the older rules as a separate step",
+        "The FAQ answers are placeholders, not invented clinic facts"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "make the spacing between sections consistent across evals/fixtures/tokens-none, it's all over the place",
+      "expected_output": "This time the user asked for the refactor: a spacing scale is declared, and section padding in .hero, .section, .contact and footer moves to tokens, with a before and after count of unique spacing values.",
+      "files": [],
+      "assertions": [
+        "Section-level padding in .hero, .section, .contact and footer uses var(--…) tokens",
+        "The tokens used for section spacing come from one declared scale (one token file or one :root block)",
+        "The reply gives the number of unique literal spacing values before and after (e.g. from the check's REPORT line)",
+        "Colours and type sizes are left as they were or changed only to tokens, never to new literals"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "add a row of three pricing cards (Studio 6x3 m £18,500, Office 5x4 m £22,000, Gym 6x4 m £24,500) to evals/fixtures/tokens-tailwind/index.html",
+      "expected_output": "Cards built only from theme utilities that exist after the reset; no bracket values, no removed steps, no inline style.",
+      "files": [],
+      "assertions": [
+        "No Tailwind class with a bracket value for spacing, text size, colour or radius (e.g. p-[…], text-[…], bg-[#…], rounded-[…])",
+        "No spacing step the theme doesn't declare (e.g. p-5, gap-10, mt-7) and no text-sm, text-lg or text-xl",
+        "No style attribute",
+        "The check reports 0 errors on lines added by the change",
+        "The three names, sizes and prices appear exactly as given"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "the hero heading in evals/fixtures/tokens-tailwind should be 44px",
+      "expected_output": "Not text-[44px]. Either the existing text-h1 (48px) with the reason, or a new text role declared in @theme with a name and the reason, and a note that a 4px difference from h1 may not be worth a new role.",
+      "files": [],
+      "assertions": [
+        "index.html contains no text-[44px] and no 2.75rem in a class",
+        "If a new size was added, it is declared in @theme in app.css under --text-* with a role name, and the heading uses that utility",
+        "The reply states the choice (existing text-h1 or a new role) and why"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Claude keeps adding random paddings and font sizes to evals/fixtures/tokens-site. set something up so it stops, for this project",
+      "expected_output": "The hook from references/enforcement.md set up for this project: the script copied into .claude/hooks/, a PostToolUse hook merged into .claude/settings.json or settings.local.json, and a test with a deliberate bad edit.",
+      "files": [],
+      "assertions": [
+        "check_tokens.py exists under the project's .claude/hooks/",
+        "A .claude/settings.json or .claude/settings.local.json in the project registers a PostToolUse hook whose matcher covers Edit and Write and whose command runs check_tokens.py --hook",
+        "Existing settings in that file, if any, are kept",
+        "The reply says the hook was tested with an edit containing a literal (e.g. padding: 13px) and what came back, or says plainly that it couldn't be tested",
+        "The reply says the hook shows errors after the edit rather than blocking it"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "the whole evals/fixtures/tokens-site site feels a bit cramped, loosen the spacing scale",
+      "expected_output": "Here the task is the scale, so changing token values is right: the space tokens grow in tokens.css, components stay on the same token names, and the reply lists what the change affects.",
+      "files": [],
+      "assertions": [
+        "At least some --space-* values in tokens.css change",
+        "styles.css still references the same token names and gains no literals",
+        "The reply lists which elements or sections the changed tokens affect",
+        "The steps still grow monotonically (each --space-N is larger than the previous one)"
+      ]
+    }
+  ]
+}
